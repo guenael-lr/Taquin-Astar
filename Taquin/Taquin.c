@@ -108,7 +108,7 @@ int mixTaquin(Taquin * _pTaquin, int _minRandom, int _maxRandom)
 	for (int i = 0; i < alea; i++)
 	{
 		rand_d = rand() % 4 + 1;
-		if (rand_d - 1 == d || rand_d + 1 == d) {
+		if ((d == HAUT && rand_d == BAS) || (d == BAS && rand_d == HAUT) || (d == DROITE && rand_d == GAUCHE) || (d == GAUCHE && rand_d == DROITE)) {
 			--i;
 			continue;
 		}
