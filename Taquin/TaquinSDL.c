@@ -67,17 +67,28 @@ int displayCaseTaquin(TaquinSDL * _pTaquinSDL,Uint8 _caseTaquin, SDL_Rect * _pDe
 {
 	// on définit où on veut la dessiner
 	{
-		SDL_Rect destination = { _x * _pTaquinSDL->resX, _y * _pTaquinSDL->resY, _pTaquinSDL->resX, _pTaquinSDL->resY };
+		SDL_Rect destination = {
+			_x * _pTaquinSDL->resX,
+			_y * _pTaquinSDL->resY,
+			_pTaquinSDL->resX,
+			_pTaquinSDL->resY 
+		};
+
 		*_pDest = destination;
 	}
 
-	int posX = (_caseTaquin % _pTaquinSDL->taquin.largeur) * _pTaquinSDL->resX;
-	int posY = (_caseTaquin / _pTaquinSDL->taquin.largeur) * _pTaquinSDL->resY;
+	int posX = _caseTaquin % _pTaquinSDL->taquin.largeur;
+	int posY = _caseTaquin / _pTaquinSDL->taquin.largeur;
 
-	SDL_Rect imgToPaste = { posX, posY, _pTaquinSDL->resX, _pTaquinSDL->resY };
+	SDL_Rect imgToPaste = {
+		posX * _pTaquinSDL->resX,
+		posY * _pTaquinSDL->resY,
+		_pTaquinSDL->resX,
+		_pTaquinSDL->resY 
+	};
 
 	// Si la case n'est pas vide ...
-	if (_pTaquinSDL->taquin.plateau[_caseTaquin % _pTaquinSDL->taquin.largeur][_caseTaquin / _pTaquinSDL->taquin.largeur] != 0)
+	if (_pTaquinSDL->taquin.plateau[_x][_y] != 0)
 	{
 		// on calcule où est la case "caseTaquin" dans l'image initiale pour -par la suite - venir découper la zone qui correspond à la case
 
@@ -107,12 +118,6 @@ int displayTaquinSDL(TaquinSDL * _pTaquinSDL)
 	// On dessine les cases une par une en allant découper l'image de fond avec un SDL_Rect
 	{
 
-
-		// On dessine le taquin terminé pour afficher quelque chose mais il faudra le changer
-		//SDL_LowerBlit(pTaquinSDL->pFond,NULL,pTaquinSDL->pWindow,NULL);
-
-		// TODO: displayTaquinSDL
-		// ...
 		SDL_Rect dest;
 		for (int x = 0; x < _pTaquinSDL->taquin.largeur; x++)
 		{
@@ -267,7 +272,8 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 								int posY = y/t.resY;
 
 								// TODO: On définit le déplacement à effectuer (différence en X de +/- 1 ou en Y de +/-1 => DEPLACEMENT sinon AUCUN)
-								
+								int NoirPosX = t.taquin.x;
+								int NoirPosY = t.taquin.y;
 								// ...
 									
 								// On applique le déplacement

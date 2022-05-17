@@ -180,7 +180,7 @@ int endTaquin(Taquin * _pTaquin)
 {
 	for (int x = 0; x < _pTaquin->largeur; x++)
 		for (int y = 0; y < _pTaquin->hauteur; y++)
-			if (_pTaquin->plateau[x][y] == (Uint8)(x + y * _pTaquin->hauteur))
+			if (_pTaquin->plateau[x][y] != (Uint8)(x + y * _pTaquin->hauteur))
 				return 0;
 
 	return 1;
@@ -194,9 +194,9 @@ int displayTaquin(Taquin * _pTaquin, int _offset)
 	printf("\n");
 	for (int y = 0; y < _pTaquin->hauteur; y++)
 	{
-		//printf("|");
+		printf("|");
 		for (int x = 0; x < _pTaquin->largeur; x++)
-			printf("%hhd\t|", _pTaquin->plateau[x][y]);
+			printf("%hhi\t|", _pTaquin->plateau[x][y]);
 		printf("\n");
 
 		for (int i = 0; i < _pTaquin->largeur; i++)
