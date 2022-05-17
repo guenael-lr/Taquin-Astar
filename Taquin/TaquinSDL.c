@@ -271,34 +271,32 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 								int posX = x/t.resX;
 								int posY = y/t.resY;
 
-								// TODO: On définit le déplacement à effectuer (différence en X de +/- 1 ou en Y de +/-1 => DEPLACEMENT sinon AUCUN)
 								int NoirPosX = t.taquin.x;
 								int NoirPosY = t.taquin.y;
 
-								printf("X=%d Y=%d, pX=%d pY=%d\n", posX, posY, NoirPosX, NoirPosY);
+								//printf("X=%d Y=%d, pX=%d pY=%d\n", posX, posY, NoirPosX, NoirPosY);
 
 								if (NoirPosX == posX)
 								{
 									if (NoirPosY + 1 == posY)
-										d = DROITE;
+										d = BAS;
 									else if (NoirPosY - 1 == posY)
-										d = GAUCHE;
+										d = HAUT;
 								}
 
 								if (NoirPosY == posY)
 								{
 									if (NoirPosX + 1 == posX)
-										d = BAS;
-									else if (NoirPosX - 1 == posX)
 										d = DROITE;
+									else if (NoirPosX - 1 == posX)
+										d = GAUCHE;
 								}
-								// ...
 									
 								// On applique le déplacement
-								if (moveTaquin(&(t.taquin), d))
+								if (!moveTaquin(&(t.taquin), d))
 								{
 									displayTaquinSDL(&t);
-									displayTaquin(&(t.taquin), 0);
+									displayTaquin(&(t.taquin), 0); 
 								}
 							}
 						}
