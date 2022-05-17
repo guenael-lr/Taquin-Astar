@@ -139,26 +139,30 @@ int moveTaquin(Taquin* _pTaquin, deplacement _d)
 			if (x > 0) {
 				_pTaquin->plateau[x][y] = _pTaquin->plateau[x - 1][y];
 				_pTaquin->plateau[x - 1][y] = 0;
+				return 0;
 			}
-			return 0;
+			return 1;
 		case DROITE:
 			if (x < _pTaquin->largeur - 1) {
 				_pTaquin->plateau[x][y] = _pTaquin->plateau[x + 1][y];
 				_pTaquin->plateau[x + 1][y] = 0;
+				return 0;
 			}
-			return 0;
+			return 1;
 		case BAS:
 			if (y < _pTaquin->hauteur - 1) {
 				_pTaquin->plateau[x][y] = _pTaquin->plateau[x][y + 1];
 				_pTaquin->plateau[x][y + 1] = 0;
+				return 0;
 			}
-			return 0;
+			return 1;
 		case HAUT:
 			if (y > 0) {
 				_pTaquin->plateau[x][y] = _pTaquin->plateau[x][y - 1];
 				_pTaquin->plateau[x][y - 1] = 0;
+				return 0;
 			}
-			return 0;
+			return 1;
 		}
 	displayTaquin(_pTaquin, 0);
 	return 1;
