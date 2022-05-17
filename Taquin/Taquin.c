@@ -14,7 +14,7 @@
 int copyTaquin(Taquin * _pSrc, Taquin * _pDest)
 {
 	// TODO: copyTaquin en cours...
-	memcpy(_pDest, _pSrc, sizeof(Taquin));
+	memcpy(pDest, pSrc, sizeof(Taquin));
 
 	_pDest->plateau = (unsigned char**)calloc(_pDest->largeur, sizeof(unsigned char*));
 	if(!_pDest->plateau)
@@ -52,7 +52,7 @@ int equalTaquin(Taquin * _pTaquin1, Taquin * _pTaquin2)
 int createTaquin(Taquin * _pTaquin, unsigned char _hauteur, unsigned char _largeur)
 {
 	// Test pour vérifier que les données passées ne sont pas corrompues
-	if(!_pTaquin) return 1;
+	if(!pTaquin) return 0;
 	
 	// Tests pour vérifier les paramètres de taille de taquin
 	if(_hauteur<SIZE_MINI) _hauteur = SIZE_MINI;
@@ -60,10 +60,15 @@ int createTaquin(Taquin * _pTaquin, unsigned char _hauteur, unsigned char _large
 	if(_largeur<SIZE_MINI) _largeur = SIZE_MINI;
 	if(_largeur>SIZE_MAXI) _largeur = SIZE_MAXI;
 	
-	// On vérifie que le plateau n'existe pas
-	// S'il existe on libère la mémoire avant de recréer le plateau
-	freeTaquin(_pTaquin);
-	_pTaquin = calloc(1, sizeof(Taquin));
+	{
+		int i;
+
+		// On vérifie que le plateau n'existe pas
+		// S'il existe on libère la mémoire avant de recréer le plateau
+		freeTaquin(pTaquin);
+		pTaquin = calloc(1, sizeof(Taquin));
+		if (!pTaquin)
+			return 1;
 
 	_pTaquin->hauteur = _hauteur;
 	_pTaquin->largeur = _largeur;
@@ -88,7 +93,7 @@ int createTaquin(Taquin * _pTaquin, unsigned char _hauteur, unsigned char _large
 	// On initialise le taquin
 	if(!initTaquin(_pTaquin)) return 0;
 
-	return 1;
+	return 0;
 }
 
 
@@ -98,6 +103,7 @@ int initTaquin(Taquin * _pTaquin)
 	for (int x = 0; x < _pTaquin->largeur; x++)
 		for (int y = 0; y < _pTaquin->hauteur; y++)
 			_pTaquin->plateau[x][y] = x + y * _pTaquin->hauteur;
+
 
 	return 1;
 }

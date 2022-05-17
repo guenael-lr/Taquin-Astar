@@ -33,41 +33,41 @@ typedef struct sTaquin {
 
 
 // Fonction pour copier un plateau de taquin pSrc vers pDest
-int copyTaquin(Taquin * pSrc, Taquin * pDest);
+int copyTaquin(Taquin * _pSrc, Taquin * _pDest);
 
 // fonction qui renvoie 1 si les 2 taquins sont identiques
 // 0 sinon
 // -1 si il y a une erreur au passage des paramètres
-int equalTaquin(Taquin * pTaquin1, Taquin * pTaquin2);
+int equalTaquin(Taquin * _pTaquin1, Taquin * _pTaquin2);
 
 // Fonction qui crée un plateau de taquin 
 // ATTENTION le plateau doit être NULL avant l'appel à cette fonction 
 // Si le plateau n'est pas NULL la fonction essayera de libérer la zone mémoire occupée par le plateau et cela peut donc aboutir à un crash si le plateau n'a pas été initialisé
-int createTaquin(Taquin * pTaquin, unsigned char hauteur, unsigned char largeur);
+int createTaquin(Taquin * _pTaquin, unsigned char _hauteur, unsigned char _largeur);
 
 // Fonction qui initialise le taquin
-int initTaquin(Taquin * pTaquin);
+int initTaquin(Taquin * _pTaquin);
 
 // Fonction qui mélange le taquin en effectuant entre minRandom et maxRandom coups aléatoires
-int mixTaquin(Taquin * pTaquin, int minRandom, int maxRandom);
+int mixTaquin(Taquin * _pTaquin, int _minRandom, int _maxRandom);
 
 // Fonction qui permet de bouger une pièce du taquin (en bougeant la case vide)
-int moveTaquin(Taquin * pTaquin, deplacement d);
+int moveTaquin(Taquin * _pTaquin, deplacement _d);
 
 // Fonction qui renvoie le déplacement à effectuer pour annuler le déplacement donné en paramètre
-deplacement cancelMove(deplacement d);
+deplacement cancelMove(deplacement _d);
 
 // Fonction qui renvoie 1 si le taquin est résolu, 0 sinon
-int endTaquin(Taquin * pTaquin);
+int endTaquin(Taquin * _pTaquin);
 
 // fonction d'affichage du taquin
-int displayTaquin(Taquin * pTaquin, int offset);
+int displayTaquin(Taquin * _pTaquin, int _offset);
 
 // Fonction pour libérer les zones mémoires occupées par un taquin
-int freeTaquin(Taquin * pTaquin);
+int freeTaquin(Taquin * _pTaquin);
 
 // Boucle de jeu 
-int gameLoop(int hauteur,int largeur,int minRandom, int maxRandom);
+int gameLoop(int _hauteur,int _largeur,int _minRandom, int _maxRandom);
 
 
 
