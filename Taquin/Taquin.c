@@ -62,9 +62,6 @@ int createTaquin(Taquin * _pTaquin, Uint8 _hauteur, Uint8 _largeur)
 	// On vérifie que le plateau n'existe pas
 	// S'il existe on libère la mémoire avant de recréer le plateau
 	freeTaquin(_pTaquin);
-	_pTaquin = calloc(1, sizeof(Taquin));
-	if (!_pTaquin)
-		return 1;
 
 	_pTaquin->hauteur = _hauteur;
 	_pTaquin->largeur = _largeur;
@@ -78,7 +75,7 @@ int createTaquin(Taquin * _pTaquin, Uint8 _hauteur, Uint8 _largeur)
 	for(int i=0; i < _hauteur; i++)
 	{
 		// On alloue la zone mémoire pour contenir la ligne i
-		_pTaquin->plateau[i] = (Uint8*) malloc(sizeof(Uint8)*_largeur);
+		_pTaquin->plateau[i] = (Uint8*) calloc(_largeur, sizeof(Uint8));
 		// S'il y a eu un souci à l'allocation on libère tout ce qui a déjàà été alloué et on retourne 0
 		if(!_pTaquin->plateau[i])
 		{
@@ -98,7 +95,7 @@ int initTaquin(Taquin * _pTaquin)
 {
 	for (int x = 0; x < _pTaquin->largeur; x++)
 		for (int y = 0; y < _pTaquin->hauteur; y++)
-			_pTaquin->plateau[x][y] = x + y * _pTaquin->hauteur;
+			_pTaquin->plateau[x][y] = (Uint8)(x + y * _pTaquin->hauteur);
 
 	return 1;
 }
@@ -155,8 +152,16 @@ int moveTaquin(Taquin* _pTaquin, deplacement _d)
 // Fonction qui renvoie le déplacement à effectuer pour annuler le déplacement donné en paramètre
 deplacement cancelMove(deplacement _d)
 {
-	// TODO: cancelMove
-
+	switch (_d) {
+	case GAUCHE:
+		return DROITE;
+	case DROITE:
+		return GAUCHE;
+	case BAS:
+		return HAUT;
+	case HAUT:
+		return BAS;
+	}
 	return AUCUN;
 }
 
@@ -186,9 +191,8 @@ int freeTaquin(Taquin * _pTaquin)
 		// On libère le tableau qui stockait les lignes
 		free(_pTaquin->plateau);
 		_pTaquin->plateau = NULL;
-	}
-	free(_pTaquin);
-	_pTaquin = NULL;
+	}	
+		
 	return 0;
 }
 // Boucle de jeu 
