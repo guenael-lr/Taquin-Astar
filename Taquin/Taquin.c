@@ -12,7 +12,6 @@
 // Fonction pour copier un plateau de taquin pSrc vers pDest
 int copyTaquin(Taquin * pSrc, Taquin * pDest)
 {
-	// TODO: copyTaquin
 
 	return 1;
 }
@@ -22,7 +21,13 @@ int copyTaquin(Taquin * pSrc, Taquin * pDest)
 // -1 si il y a une erreur au passage des paramètres
 int equalTaquin(Taquin * pTaquin1, Taquin * pTaquin2)
 {
-	// TODO: equalTaquin
+	if (pTaquin1->hauteur != pTaquin2->hauteur || pTaquin1->largeur != pTaquin2->largeur)
+		return -1;
+
+	for (int x = 0; x < pTaquin1->largeur; x++)
+		for (int y = 0; y < pTaquin1->hauteur; y++)
+			if (pTaquin1->plateau[x][y] != pTaquin1->plateau[x][y])
+				return -1;
 
 	return 0;
 }
@@ -46,25 +51,17 @@ int createTaquin(Taquin * pTaquin, unsigned char hauteur, unsigned char largeur)
 
 		// On vérifie que le plateau n'existe pas
 		// S'il existe on libère la mémoire avant de recréer le plateau
-		if(pTaquin->plateau)
-		{
-			// On libère le plateau ligne par ligne
-			for(i=0; i < pTaquin->hauteur; i++) if(pTaquin->plateau[i]) free(pTaquin->plateau[i]);
-			// On libère le tableau qui stockait les lignes
-			free(pTaquin->plateau);
-			pTaquin->plateau = NULL;
-		}
+		freeTaquin(pTaquin);
+		pTaquin = calloc(1, sizeof(Taquin));
 
 		pTaquin->hauteur = hauteur;
 		pTaquin->largeur = largeur;
 
 		// on alloue la zone mémoire pour stocker les adresses des lignes du tableau
-		pTaquin->plateau = (unsigned char**) malloc(sizeof(unsigned char*)*hauteur);
+		pTaquin->plateau = (unsigned char**) calloc(hauteur, sizeof(unsigned char*));
 		
 		// si on a pas réussi à allouer la zone mémoire on retourne 0
 		if(!pTaquin->plateau) return 0;
-
-		for(i=0; i < hauteur; i++) pTaquin->plateau[i] = NULL;
 
 		for(i=0; i < hauteur; i++)
 		{
@@ -74,7 +71,7 @@ int createTaquin(Taquin * pTaquin, unsigned char hauteur, unsigned char largeur)
 			if(!pTaquin->plateau[i])
 			{
 				freeTaquin(pTaquin);
-				return 0;
+				return 1;
 			}
 		}
 		// On initialise le taquin
@@ -136,8 +133,16 @@ int displayTaquin(Taquin * pTaquin, int offset)
 // Fonction pour libérer les zones mémoires occupées par un taquin
 int freeTaquin(Taquin * pTaquin)
 {
-	// TODO: freeTaquin
-
+	if (pTaquin->plateau)
+	{
+		// On libère le plateau ligne par ligne
+		for (int i = 0; i < pTaquin->hauteur; i++) if (pTaquin->plateau[i]) free(pTaquin->plateau[i]);
+		// On libère le tableau qui stockait les lignes
+		free(pTaquin->plateau);
+		pTaquin->plateau = NULL;
+	}
+	free(pTaquin);
+	pTaquin = NULL;
 	return 1;
 }
 // Boucle de jeu 
