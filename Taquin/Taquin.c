@@ -13,7 +13,6 @@
 // Fonction pour copier un plateau de taquin pSrc vers pDest
 int copyTaquin(Taquin * _pSrc, Taquin * _pDest)
 { 
-	// TODO: copyTaquin en cours...
 	memcpy(_pDest, _pSrc, sizeof(Taquin));
 
 	_pDest->plateau = (Uint8**)calloc(_pDest->largeur, sizeof(Uint8*));
@@ -24,7 +23,7 @@ int copyTaquin(Taquin * _pSrc, Taquin * _pDest)
 		(_pDest->plateau)[i] = (Uint8*)calloc(_pDest->hauteur, sizeof(Uint8));
 		if (!(_pDest->plateau)[i])
 			return 1;
-		memcpy(_pDest->plateau[i], _pSrc->plateau[i], sizeof(Uint8)* _pSrc->hauteur);
+		memcpy(_pDest->plateau[i], _pSrc->plateau[i], sizeof(Uint8) * _pSrc->hauteur);
 	}
 
 	return 0;
