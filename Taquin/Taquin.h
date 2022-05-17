@@ -26,9 +26,9 @@ typedef enum{AUCUN, GAUCHE, DROITE, HAUT, BAS} deplacement;
 
 // Structure de données pour stocker le taquin et ses possibilités de jeu (position de la case vide)
 typedef struct sTaquin {
-	unsigned char ** plateau;			// Tableau contenant le taquin (
-	unsigned char hauteur,largeur;		// Taille du plateau
-	unsigned char x,y;					// Position de la case vide à déplacer
+	Uint8 ** plateau;			// Tableau contenant le taquin (
+	Uint8 hauteur,largeur;		// Taille du plateau
+	Uint8 x,y;					// Position de la case vide à déplacer
 } Taquin;
 
 
@@ -43,7 +43,7 @@ int equalTaquin(Taquin * _pTaquin1, Taquin * _pTaquin2);
 // Fonction qui crée un plateau de taquin 
 // ATTENTION le plateau doit être NULL avant l'appel à cette fonction 
 // Si le plateau n'est pas NULL la fonction essayera de libérer la zone mémoire occupée par le plateau et cela peut donc aboutir à un crash si le plateau n'a pas été initialisé
-int createTaquin(Taquin * _pTaquin, unsigned char _hauteur, unsigned char _largeur);
+int createTaquin(Taquin * _pTaquin, Uint8 _hauteur, Uint8 _largeur);
 
 // Fonction qui initialise le taquin
 int initTaquin(Taquin * _pTaquin);
