@@ -127,6 +127,7 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 		mixTaquin(&(t.taquin), minRandom, maxRandom);
 
 		// On affiche le taquin mélangé
+		displayTaquin(&(t.taquin), 0);
 		displayTaquinSDL(&t);
 
 		end = 0;
