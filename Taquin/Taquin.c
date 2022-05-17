@@ -19,13 +19,12 @@ int copyTaquin(Taquin * _pSrc, Taquin * _pDest)
 	_pDest->plateau = (Uint8**)calloc(_pDest->largeur, sizeof(Uint8*));
 	if(!_pDest->plateau)
 		return 1;
-
 	for (int i = 0; i < _pDest->largeur; i++)
 	{
 		(_pDest->plateau)[i] = (Uint8*)calloc(_pDest->hauteur, sizeof(Uint8));
 		if (!(_pDest->plateau)[i])
 			return 1;
-		memcpy(_pDest->plateau[i], _pSrc->plateau[i], sizeof(Uint8))
+		memcpy(_pDest->plateau[i], _pSrc->plateau[i], sizeof(Uint8)* _pSrc->hauteur);
 	}
 
 	return 0;
@@ -160,7 +159,7 @@ int freeTaquin(Taquin * _pTaquin)
 	}
 	free(_pTaquin);
 	_pTaquin = NULL;
-	return 1;
+	return 0;
 }
 // Boucle de jeu 
 int gameLoop(int hauteur,int largeur,int minRandom, int maxRandom)
