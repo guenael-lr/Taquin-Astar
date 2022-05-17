@@ -63,7 +63,7 @@ int createTaquinSDL(TaquinSDL * pTaquinSDL,int hauteur, int largeur, char * path
 }
 
 
-int displayCaseTaquin(TaquinSDL * pTaquinSDL,unsigned char caseTaquin, SDL_Rect * pDest, int x, int y, int refresh)
+int displayCaseTaquin(TaquinSDL * pTaquinSDL,Uint8 caseTaquin, SDL_Rect * pDest, int x, int y, int refresh)
 {
 	// TODO: displayCaseTaquin
 	// on définit où on veut la dessiner

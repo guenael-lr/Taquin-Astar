@@ -14,15 +14,15 @@
 int copyTaquin(Taquin * _pSrc, Taquin * _pDest)
 {
 	// TODO: copyTaquin en cours...
-	memcpy(pDest, pSrc, sizeof(Taquin));
+	memcpy(_pDest, _pSrc, sizeof(Taquin));
 
-	_pDest->plateau = (unsigned char**)calloc(_pDest->largeur, sizeof(unsigned char*));
+	_pDest->plateau = (Uint8**)calloc(_pDest->largeur, sizeof(Uint8*));
 	if(!_pDest->plateau)
 		return 1;
 
 	for (int i = 0; i < _pDest->largeur; i++)
 	{
-		(_pDest->plateau)[i] = (unsigned char*)calloc(_pDest->hauteur, sizeof(unsigned char));
+		(_pDest->plateau)[i] = (Uint8*)calloc(_pDest->hauteur, sizeof(Uint8));
 		if (!(_pDest->plateau)[i])
 			return 1;
 	}
@@ -39,8 +39,7 @@ int equalTaquin(Taquin * _pTaquin1, Taquin * _pTaquin2)
 		return -1;
 
 	for (int x = 0; x < _pTaquin1->largeur; x++)
-		for (int y = 0; y < _pTaquin1->hauteur; y++)
-			if (_pTaquin1->plateau[x][y] != _pTaquin1->plateau[x][y])
+			if(!memcmp(_pTaquin1->plateau[x], _pTaquin1->plateau[x], sizeof(Uint8*)*_pTaquin1->hauteur))
 				return -1;
 
 	return 0;
@@ -49,10 +48,10 @@ int equalTaquin(Taquin * _pTaquin1, Taquin * _pTaquin2)
 // Fonction qui crée un plateau de taquin 
 // ATTENTION le plateau doit être NULL avant l'appel à cette fonction 
 // Si le plateau n'est pas NULL la fonction essayera de libérer la zone mémoire occupée par le plateau et cela peut donc aboutir à un crash si le plateau n'a pas été initialisé
-int createTaquin(Taquin * _pTaquin, unsigned char _hauteur, unsigned char _largeur)
+int createTaquin(Taquin * _pTaquin, Uint8 _hauteur, Uint8 _largeur)
 {
 	// Test pour vérifier que les données passées ne sont pas corrompues
-	if(!pTaquin) return 0;
+	if(!_pTaquin) return 0;
 	
 	// Tests pour vérifier les paramètres de taille de taquin
 	if(_hauteur<SIZE_MINI) _hauteur = SIZE_MINI;
@@ -60,21 +59,18 @@ int createTaquin(Taquin * _pTaquin, unsigned char _hauteur, unsigned char _large
 	if(_largeur<SIZE_MINI) _largeur = SIZE_MINI;
 	if(_largeur>SIZE_MAXI) _largeur = SIZE_MAXI;
 	
-	{
-		int i;
-
-		// On vérifie que le plateau n'existe pas
-		// S'il existe on libère la mémoire avant de recréer le plateau
-		freeTaquin(pTaquin);
-		pTaquin = calloc(1, sizeof(Taquin));
-		if (!pTaquin)
-			return 1;
+	// On vérifie que le plateau n'existe pas
+	// S'il existe on libère la mémoire avant de recréer le plateau
+	freeTaquin(_pTaquin);
+	_pTaquin = calloc(1, sizeof(Taquin));
+	if (!_pTaquin)
+		return 1;
 
 	_pTaquin->hauteur = _hauteur;
 	_pTaquin->largeur = _largeur;
 
 	// on alloue la zone mémoire pour stocker les adresses des lignes du tableau
-	_pTaquin->plateau = (unsigned char**) calloc(_hauteur, sizeof(unsigned char*));
+	_pTaquin->plateau = (Uint8**) calloc(_hauteur, sizeof(Uint8*));
 		
 	// si on a pas réussi à allouer la zone mémoire on retourne 0
 	if(!_pTaquin->plateau) return 0;
@@ -82,7 +78,7 @@ int createTaquin(Taquin * _pTaquin, unsigned char _hauteur, unsigned char _large
 	for(int i=0; i < _hauteur; i++)
 	{
 		// On alloue la zone mémoire pour contenir la ligne i
-		_pTaquin->plateau[i] = (unsigned char*) malloc(sizeof(unsigned char)*_largeur);
+		_pTaquin->plateau[i] = (Uint8*) malloc(sizeof(Uint8)*_largeur);
 		// S'il y a eu un souci à l'allocation on libère tout ce qui a déjàà été alloué et on retourne 0
 		if(!_pTaquin->plateau[i])
 		{
@@ -104,22 +100,54 @@ int initTaquin(Taquin * _pTaquin)
 		for (int y = 0; y < _pTaquin->hauteur; y++)
 			_pTaquin->plateau[x][y] = x + y * _pTaquin->hauteur;
 
-
 	return 1;
 }
 
 // Fonction qui mélange le taquin en effectuant entre minRandom et maxRandom coups aléatoires
 int mixTaquin(Taquin * _pTaquin, int _minRandom, int _maxRandom)
 {
-	// TODO: mixTaquin
+	int alea = rand() % (_maxRandom - _minRandom + 1) + _minRandom;
+ 	// TODO: mixTaquin
 
 	return 1;
 }
 
 // Fonction qui permet de bouger une pièce du taquin (en bougeant la case vide)
-int moveTaquin(Taquin * _pTaquin, deplacement _d)
+int moveTaquin(Taquin* _pTaquin, deplacement _d)
 {
-	// TODO: moveTaquin
+	if (!_d) return 1;
+	int x, y;
+	for (x = 0; x < _pTaquin->largeur; ++x)
+		for (y = 0; y < _pTaquin->hauteur; ++y)
+			if (!_pTaquin->plateau[x][y])
+				break;
+
+	switch (_d) {
+		case GAUCHE:
+			if (x > 0) {
+				_pTaquin->plateau[x][y] = _pTaquin->plateau[x - 1][y];
+				_pTaquin->plateau[x - 1][y] = 0;
+			}
+			break;
+		case DROITE:
+			if (x < _pTaquin->largeur - 1) {
+				_pTaquin->plateau[x][y] = _pTaquin->plateau[x - 1][y];
+				_pTaquin->plateau[x - 1][y] = 0;
+			}
+			break;
+		case BAS:
+			if (y < _pTaquin->hauteur - 1) {
+				_pTaquin->plateau[x][y] = _pTaquin->plateau[x][y + 1];
+				_pTaquin->plateau[x][y + 1] = 0;
+			}
+			break;
+		case HAUT:
+			if (y > 0) {
+				_pTaquin->plateau[x][y] = _pTaquin->plateau[x][y - 1];
+				_pTaquin->plateau[x][y - 1] = 0;
+			}
+			break;
+		}
 
 	return 1;
 }
