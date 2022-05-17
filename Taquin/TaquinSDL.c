@@ -197,7 +197,7 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 												// On effectue le déplacement, on affiche le nouveau plateau et on attend un appui sur une touche pour continuer
 												if(tabDeplacements[i]!=AUCUN)
 												{
-													if(moveTaquin(&(t.taquin),tabDeplacements[i])) displayTaquinSDL(&t);
+													if(!moveTaquin(&(t.taquin),tabDeplacements[i])) displayTaquinSDL(&t);
 													else break;
 												}
 											}
@@ -215,7 +215,7 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 									break;
 							}
 							
-							if(d!=AUCUN && moveTaquin(&(t.taquin),d)) displayTaquinSDL(&t);
+							if(d!=AUCUN && !moveTaquin(&(t.taquin),d)) displayTaquinSDL(&t);
 
 						}
 						break;
@@ -241,7 +241,7 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 								// ...
 									
 								// On applique le déplacement
-								if(moveTaquin(&(t.taquin),d)) displayTaquinSDL(&t);
+								if(!moveTaquin(&(t.taquin),d)) displayTaquinSDL(&t);
 							}
 						}
 						break;
