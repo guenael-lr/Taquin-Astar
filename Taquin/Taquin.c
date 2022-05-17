@@ -6,15 +6,28 @@
 #include <stdlib.h>
 #include <time.h>
 #include <conio.h>
+#include <assert.h>
 
 
 
 // Fonction pour copier un plateau de taquin pSrc vers pDest
 int copyTaquin(Taquin * pSrc, Taquin * pDest)
 {
-	// TODO: copyTaquin
+	// TODO: copyTaquin en cours...
+	memcpy(pDest, pSrc, sizeof(Taquin));
 
-	return 1;
+	pDest->plateau = (unsigned char**)calloc(pDest->largeur, sizeof(unsigned char*));
+	if(!pDest->plateau)
+		return 1;
+
+	for (int i = 0; i < pDest->largeur; i++)
+	{
+		(pDest->plateau)[i] = (unsigned char*)calloc(pDest->hauteur, sizeof(unsigned char));
+		if (!(pDest->plateau)[i])
+			return 1;
+	}
+
+	return 0;
 }
 
 // fonction qui renvoie 1 si les 2 taquins sont identiques
