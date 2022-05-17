@@ -114,7 +114,7 @@ int mixTaquin(Taquin * _pTaquin, int _minRandom, int _maxRandom)
 		}
 		if (moveTaquin(_pTaquin, rand_d)) --i;;
 		d = rand_d;
-	}
+ fccfffffff	}
 
 	return 1;
 }
