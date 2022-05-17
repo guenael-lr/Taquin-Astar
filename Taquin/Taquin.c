@@ -234,4 +234,3 @@ int gameLoop(int hauteur,int largeur,int minRandom, int maxRandom)
 	}
 	return 1;
 }
-

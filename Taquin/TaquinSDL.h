@@ -28,7 +28,7 @@ typedef struct sTaquinSDL {
 // Cette fonction crée aussi la fenêtre SDL et la stocke dans la structure TaquinSDL
 int createTaquinSDL(TaquinSDL * pTaquinSDL,int hauteur, int largeur, char * pathBMPfile);
 // Fonction pour dessiner une case sur le fond
-int displayCaseTaquin(TaquinSDL * pTaquinSDL,Uint8 caseTaquin, SDL_Rect * pDest, int x, int y, int refresh);
+int displayCaseTaquin(TaquinSDL * _pTaquinSDL,Uint8 _caseTaquin, SDL_Rect * _pDest, int _x, int _y, int _refresh);
 // fonction pour rendre le taquin dans son état actuel
 int displayTaquinSDL(TaquinSDL * pTaquinSDL);
 // fonction permettant de faire le rendu SDL du taquin et de jouer (gestion des évènements à l'intérieur de la fonction)
