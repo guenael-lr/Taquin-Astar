@@ -102,7 +102,7 @@ int initTaquin(Taquin * _pTaquin)
 // Fonction qui mélange le taquin en effectuant entre minRandom et maxRandom coups aléatoires
 int mixTaquin(Taquin * _pTaquin, int _minRandom, int _maxRandom)
 {
-	int alea = rand() % (_maxRandom - _minRandom + 1) + _minRandom;
+	int alea = 1;//rand() % (_maxRandom - _minRandom + 1) + _minRandom;
 	int d = AUCUN;
 	int rand_d = AUCUN;
 	for (int i = 0; i < alea; i++)
@@ -180,7 +180,7 @@ int endTaquin(Taquin * _pTaquin)
 {
 	for (int x = 0; x < _pTaquin->largeur; x++)
 		for (int y = 0; y < _pTaquin->hauteur; y++)
-			if (_pTaquin->plateau[x][y] == (Uint8)(x + y * _pTaquin->hauteur))
+			if (_pTaquin->plateau[x][y] != (Uint8)(x + y * _pTaquin->hauteur))
 				return 0;
 
 	return 1;
