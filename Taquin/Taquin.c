@@ -84,7 +84,7 @@ int createTaquin(Taquin * _pTaquin, Uint8 _hauteur, Uint8 _largeur)
 		}
 	}
 	// On initialise le taquin
-	if(!initTaquin(_pTaquin)) return 0;
+	if(initTaquin(_pTaquin)) return 1;
 
 	return 0;
 }
@@ -97,14 +97,25 @@ int initTaquin(Taquin * _pTaquin)
 		for (int y = 0; y < _pTaquin->hauteur; y++)
 			_pTaquin->plateau[x][y] = (Uint8)(x + y * _pTaquin->hauteur);
 
-	return 1;
+	return 0;
 }
 
 // Fonction qui mélange le taquin en effectuant entre minRandom et maxRandom coups aléatoires
 int mixTaquin(Taquin * _pTaquin, int _minRandom, int _maxRandom)
 {
 	int alea = rand() % (_maxRandom - _minRandom + 1) + _minRandom;
- 	// TODO: mixTaquin
+	int d = AUCUN;
+	int rand_d = AUCUN;
+	for (int i = 0; i < alea; i++)
+	{
+		rand_d = rand() % 4 + 1;
+		if (rand_d == d) {
+			--i;
+			continue;
+		}
+		moveTaquin(_pTaquin, rand_d);
+		d = rand_d;
+	}
 
 	return 1;
 }
@@ -152,25 +163,18 @@ int moveTaquin(Taquin* _pTaquin, deplacement _d)
 // Fonction qui renvoie le déplacement à effectuer pour annuler le déplacement donné en paramètre
 deplacement cancelMove(deplacement _d)
 {
-	switch (_d) {
-	case GAUCHE:
-		return DROITE;
-	case DROITE:
-		return GAUCHE;
-	case BAS:
-		return HAUT;
-	case HAUT:
-		return BAS;
-	}
-	return AUCUN;
+	return (_d == GAUCHE) ? DROITE : (_d == DROITE) ? GAUCHE : (_d == HAUT) ? BAS : (_d == BAS) ? HAUT : AUCUN;
 }
 
 // Fonction qui renvoie 1 si le taquin es résolu, 0 sinon
 int endTaquin(Taquin * _pTaquin)
 {
-	// TODO: endTaquin
+	for (int x = 0; x < _pTaquin->largeur; x++)
+		for (int y = 0; y < _pTaquin->hauteur; y++)
+			if (_pTaquin->plateau[x][y] == (Uint8)(x + y * _pTaquin->hauteur))
+				return 0;
 
-	return 0;
+	return 1;
 }
 
 // fonction d'affichage du taquin

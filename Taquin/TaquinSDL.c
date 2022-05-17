@@ -114,8 +114,6 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 	int end = 0;
 	TaquinSDL t;
 
-	srand((unsigned)time(NULL));
-
 	// On crée le taquin et la fenêtre pour le dessiner
 	if(!createTaquinSDL(&t,hauteur,largeur,pathBMPfile)) return 0;
 
