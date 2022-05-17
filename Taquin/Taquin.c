@@ -160,7 +160,7 @@ int moveTaquin(Taquin* _pTaquin, deplacement _d)
 			}
 			break;
 		}
-
+	displayTaquin(_pTaquin, 0);
 	return 1;
 }
 
@@ -185,15 +185,17 @@ int endTaquin(Taquin * _pTaquin)
 int displayTaquin(Taquin * _pTaquin, int _offset)
 {
 	for (int i = 0; i < _pTaquin->largeur; i++)
-		printf("____");
+		printf("________");
+	printf("\n");
 	for (int y = 0; y < _pTaquin->hauteur; y++)
 	{
+		//printf("|");
 		for (int x = 0; x < _pTaquin->largeur; x++)
-			printf("|%hhd\t", _pTaquin->plateau[x][y]);
+			printf("%hhd\t|", _pTaquin->plateau[x][y]);
 		printf("\n");
 
 		for (int i = 0; i < _pTaquin->largeur; i++)
-			printf("____");
+			printf("________");
 		printf("\n");
 	}
 
