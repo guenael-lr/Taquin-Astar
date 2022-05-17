@@ -20,6 +20,7 @@
 // Case vide, on définit la case vide comme étant la valeur 0, elle doit être en haut à gauche du taquin quand il est terminé
 #define VIDE 0
 
+typedef unsigned char Uint8;
 
 // Type redéfini pour sélectionner le déplacement à effectuer
 typedef enum{AUCUN, GAUCHE, DROITE, HAUT, BAS} deplacement;
