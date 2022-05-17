@@ -180,8 +180,20 @@ int endTaquin(Taquin * _pTaquin)
 int displayTaquin(Taquin * _pTaquin, int _offset)
 {
 	// TODO: displayTaquin 
+	for (int i = 0; i < _pTaquin->largeur; i++)
+		printf("____");
+	for (int y = 0; y < _pTaquin->hauteur; y++)
+	{
+		for (int x = 0; x < _pTaquin->largeur; x++)
+			printf("|%d\t", _pTaquin->plateau[x][y]);
+		printf("\n");
 
-	return 1;
+		for (int i = 0; i < _pTaquin->largeur; i++)
+			printf("____");
+		printf("\n");
+	}
+
+	return 0;
 }
 
 // Fonction pour libérer les zones mémoires occupées par un taquin
@@ -190,7 +202,9 @@ int freeTaquin(Taquin * _pTaquin)
 	if (_pTaquin->plateau)
 	{
 		// On libère le plateau ligne par ligne
-		for (int i = 0; i < _pTaquin->hauteur; i++) if (_pTaquin->plateau[i]) free(_pTaquin->plateau[i]);
+		for (int i = 0; i < _pTaquin->hauteur; i++) 
+			if (_pTaquin->plateau[i]) 
+				free(_pTaquin->plateau[i]);
 		// On libère le tableau qui stockait les lignes
 		free(_pTaquin->plateau);
 		_pTaquin->plateau = NULL;
