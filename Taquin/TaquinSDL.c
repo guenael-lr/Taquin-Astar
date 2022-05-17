@@ -143,6 +143,7 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 
 			while(!end && SDL_PollEvent(&e))
 			{
+
 				switch(e.type)
 				{
 					case SDL_KEYDOWN:
@@ -197,13 +198,21 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 												// On effectue le déplacement, on affiche le nouveau plateau et on attend un appui sur une touche pour continuer
 												if(tabDeplacements[i]!=AUCUN)
 												{
-													if(!moveTaquin(&(t.taquin),tabDeplacements[i])) displayTaquinSDL(&t);
+													if (!moveTaquin(&(t.taquin), tabDeplacements[i]))
+													{
+														displayTaquinSDL(&t);
+														displayTaquin(&(t.taquin), 0);
+													}
 													else break;
 												}
 											}
 										}
 										// Si la résolution n'a pas fonctionné, on affiche le taquin tel qu'il était avant résolution (on efface l'icone de "progression" si elle avait été dessinée)
-										else displayTaquinSDL(&t);
+										else
+										{
+											displayTaquinSDL(&t);
+											displayTaquin(&(t.taquin), 0);
+										}
 
 										if(tabDeplacements) 
 										{
@@ -215,7 +224,10 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 									break;
 							}
 							
-							if(d!=AUCUN && !moveTaquin(&(t.taquin),d)) displayTaquinSDL(&t);
+							if (d != AUCUN && !moveTaquin(&(t.taquin), d)) {
+								displayTaquinSDL(&t);
+								displayTaquin(&(t.taquin), 0);
+							}
 
 						}
 						break;
@@ -241,7 +253,11 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 								// ...
 									
 								// On applique le déplacement
-								if(!moveTaquin(&(t.taquin),d)) displayTaquinSDL(&t);
+								if (moveTaquin(&(t.taquin), d))
+								{
+									displayTaquinSDL(&t);
+									displayTaquin(&(t.taquin), 0);
+								}
 							}
 						}
 						break;
