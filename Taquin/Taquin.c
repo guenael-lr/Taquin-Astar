@@ -179,13 +179,12 @@ int endTaquin(Taquin * _pTaquin)
 // fonction d'affichage du taquin
 int displayTaquin(Taquin * _pTaquin, int _offset)
 {
-	// TODO: displayTaquin 
 	for (int i = 0; i < _pTaquin->largeur; i++)
 		printf("____");
 	for (int y = 0; y < _pTaquin->hauteur; y++)
 	{
 		for (int x = 0; x < _pTaquin->largeur; x++)
-			printf("|%d\t", _pTaquin->plateau[x][y]);
+			printf("|%hhd\t", _pTaquin->plateau[x][y]);
 		printf("\n");
 
 		for (int i = 0; i < _pTaquin->largeur; i++)
