@@ -280,17 +280,17 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 								if (NoirPosX == posX)
 								{
 									if (NoirPosY + 1 == posY)
-										d = BAS;
+										d = DROITE;
 									else if (NoirPosY - 1 == posY)
-										d = HAUT;
+										d = GAUCHE;
 								}
 
 								if (NoirPosY == posY)
 								{
 									if (NoirPosX + 1 == posX)
-										d = DROITE;
+										d = BAS;
 									else if (NoirPosX - 1 == posX)
-										d = GAUCHE;
+										d = DROITE;
 								}
 								// ...
 									
