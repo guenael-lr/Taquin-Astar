@@ -108,11 +108,11 @@ int mixTaquin(Taquin * _pTaquin, int _minRandom, int _maxRandom)
 	for (int i = 0; i < alea; i++)
 	{
 		rand_d = rand() % 4 + 1;
-		if (rand_d == d) {
+		if (rand_d - 1 == d || rand_d + 1 == d) {
 			--i;
 			continue;
 		}
-		moveTaquin(_pTaquin, rand_d);
+		if (moveTaquin(_pTaquin, rand_d)) --i;;
 		d = rand_d;
 	}
 
@@ -140,25 +140,25 @@ int moveTaquin(Taquin* _pTaquin, deplacement _d)
 				_pTaquin->plateau[x][y] = _pTaquin->plateau[x - 1][y];
 				_pTaquin->plateau[x - 1][y] = 0;
 			}
-			break;
+			return 0;
 		case DROITE:
 			if (x < _pTaquin->largeur - 1) {
 				_pTaquin->plateau[x][y] = _pTaquin->plateau[x + 1][y];
 				_pTaquin->plateau[x + 1][y] = 0;
 			}
-			break;
+			return 0;
 		case BAS:
 			if (y < _pTaquin->hauteur - 1) {
 				_pTaquin->plateau[x][y] = _pTaquin->plateau[x][y + 1];
 				_pTaquin->plateau[x][y + 1] = 0;
 			}
-			break;
+			return 0;
 		case HAUT:
 			if (y > 0) {
 				_pTaquin->plateau[x][y] = _pTaquin->plateau[x][y - 1];
 				_pTaquin->plateau[x][y - 1] = 0;
 			}
-			break;
+			return 0;
 		}
 	displayTaquin(_pTaquin, 0);
 	return 1;
