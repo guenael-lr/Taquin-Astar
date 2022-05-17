@@ -198,7 +198,7 @@ int displayTaquin(Taquin * _pTaquin, int _offset)
 			printf("________");
 		printf("\n");
 	}
-
+	printf("\n\n\n");
 	return 0;
 }
 
