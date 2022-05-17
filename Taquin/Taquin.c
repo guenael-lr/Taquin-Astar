@@ -112,7 +112,7 @@ int mixTaquin(Taquin * _pTaquin, int _minRandom, int _maxRandom)
 			--i;
 			continue;
 		}
-		moveTaquin(_pTaquin, rand_d);
+		moveTaquin(&_pTaquin, rand_d);
 		d = rand_d;
 	}
 
@@ -123,7 +123,7 @@ int mixTaquin(Taquin * _pTaquin, int _minRandom, int _maxRandom)
 int moveTaquin(Taquin* _pTaquin, deplacement _d)
 {
 	if (!_d) return 1;
-	int x, y;
+	int x = 0, y = 0;
 	for (x = 0; x < _pTaquin->largeur; ++x)
 		for (y = 0; y < _pTaquin->hauteur; ++y)
 			if (!_pTaquin->plateau[x][y])
