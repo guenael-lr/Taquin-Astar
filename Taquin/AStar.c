@@ -12,6 +12,8 @@
 ptrListAStar createNodeList(Taquin * pTaquin, int gValue, int fValue, deplacement d, ptrListAStar pPrevPlay)
 {
 	ptrListAStar node = calloc(1, sizeof(ListAStar));
+	if (!node)
+		return 1;
 	
 	copyTaquin(pTaquin, &(node->pTaquin));
 	moveTaquin(&(node->pTaquin), d);
@@ -68,7 +70,20 @@ ptrListAStar * isInList(ptrListAStar * ppHead, Taquin * pTaquin)
 // si on met displayFGH à 0 les valeur de F, G et H ne sont pas affichées
 int displayList(ptrListAStar pHead, int displayFGH)
 {
-	return 1;
+	int i = 0;
+	while (pHead != NULL)
+	{
+		if (displayFGH)
+		{
+			printf("F=%d, G=%d, H=\n", pHead->f, pHead->g);
+		}
+		printf("count = %d, Prev deplace: %d\n",i++, pHead->prev_d);
+		displayTaquin(&(pHead->pTaquin), 0);
+		pHead = pHead->post_node;
+		
+	}
+
+	return 0;
 }
 
 // Fonction pour résoudre le taquin en utilisant l'algorithme A*
