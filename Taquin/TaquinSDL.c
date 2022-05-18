@@ -4,6 +4,23 @@
 #include "SDL_gfxprimitives.h"
 
 
+Taquin* IntialTaquin(Taquin* _pTaquin)
+{
+	static Taquin* taq= NULL;
+	if (taq)
+		return taq;
+
+
+	taq = calloc(1, sizeof(Taquin));
+	if (!taq)
+		return NULL;
+
+	createTaquin(taq, _pTaquin->hauteur, _pTaquin->largeur);
+	initTaquin(taq);
+
+	return taq;
+}
+
 // Fonction permettant de créer le taquin en SDL à partir de sa taille et du fichier BMP à utiliser
 // Cette fonction crée aussi la fenêtre SDL et la stocke dans la structure TaquinSDL
 int createTaquinSDL(TaquinSDL * pTaquinSDL,int hauteur, int largeur, char * pathBMPfile)
