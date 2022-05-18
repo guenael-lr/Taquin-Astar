@@ -139,8 +139,13 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 			cursorchild = createNodeList(&(cursor->pTaquin), g, g + h(&(cursor->pTaquin)), i, cursor);
 			if (equalTaquin((&cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
 			{
-				displayTaquin(&cursorchild->pTaquin,1);
-				pTaquin = &(cursorchild->pTaquin);
+				copyTaquin(&(cursorchild->pTaquin), pTaquin);
+				
+				printf("PRIVATE\n");
+				displayTaquin(&(cursorchild->pTaquin), 0);
+				//displayTaquin(InitialTaquin(&(cursor->pTaquin)), 0);
+
+
 				end = 1;
 				break;
 			}
@@ -153,7 +158,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 
 			insertList(&open, cursorchild, 1);
 		}
-
+		//NOW need to recompose the way
 
 
 
