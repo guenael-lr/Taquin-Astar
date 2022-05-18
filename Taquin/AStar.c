@@ -11,27 +11,51 @@
 // fonction pour créer (allouer) un noeud de liste et l'initialiser avec le taquin passé en paramètre
 ptrListAStar createNodeList(Taquin * pTaquin, int gValue, int fValue, deplacement d, ptrListAStar pPrevPlay)
 {
-	return NULL;
+	ptrListAStar node = calloc(1, sizeof(ListAStar));
+	node->g = gValue;
+	node->f = fValue;
+	node->pTaquin;
+	node->prev_d = d;
+	node->prev_node = pPrevPlay;
+	return node;
 }
 
 // Insertion dans la liste de façon triée ou non
 // si on passe le paramètre tri à 0, on insère en tête de liste
 int insertList(ptrListAStar * ppHead, ptrListAStar pNode, int tri)
 {
-	return 1;
+	if (!tri || (*ppHead)->f > pNode->f) {
+		pNode->post_node = (*ppHead);
+		ppHead = &(pNode);
+		return 0;
+	}
+	ptrListAStar* cursor = ppHead;
+	while (pNode->f >= (*cursor)->post_node->f)
+		cursor = (*cursor)->post_node;
+	pNode->post_node = (*cursor)->post_node;
+	(*cursor)->post_node = pNode;
+
+	return 0;
 }
 
 // Fonction pour prélever le noeud en tête de liste
 // Retourne le noeud prélevé
 ptrListAStar popList(ptrListAStar * ppHead)
 {
-	return NULL;
+	ptrListAStar node = (*ppHead);
+	ppHead = &(node->post_node);
+
+	return node;
 }
 
 // fonction qui retourne le noeud dans lequel on trouve le taquin passé en paramètre (pointeur sur le pointeur dans la liste)
 ptrListAStar * isInList(ptrListAStar * ppHead, Taquin * pTaquin)
 {
-	return NULL;
+	ptrListAStar* cursor = ppHead;
+	while (memcmp(&(pTaquin), &((*cursor)->pTaquin), sizeof(Taquin)))
+		cursor = &((*cursor)->post_node);
+	
+	return cursor;
 }
 
 // fonction pour afficher une liste
@@ -52,11 +76,26 @@ int displayList(ptrListAStar pHead, int displayFGH)
 // pWindow
 int solveTaquin(Taquin *pTaquin, deplacement ** pTabDeplacement, unsigned long *pNbDeplacements, unsigned long * pNbTaquinsGeneres, unsigned long * pTimeElapsed, int stepByStep, SDL_Surface * pWindow)
 {
+	int heu = h(pTaquin);
+	ptrListAStar closed = createNodeList(pTaquin, 0, 0, AUCUN, NULL);
+	ptrListAStar open = createNodeList(pTaquin, 0, heu, AUCUN, NULL);
+	ptrListAStar cursor = NULL;
+
+	while (open) {
+		cursor = popList(&open);
+		insertList(&closed, cursor,1);
+
+
+
+	}
+
+
 	return 1;
 }
 
 // fonction d'évaluation pour la résolution avec AStar
 int h(Taquin * pTaquin)
 {
+
 	return 0;
 }

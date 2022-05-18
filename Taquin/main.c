@@ -91,7 +91,7 @@ int main(int argc, char ** argv)
 				// En mode console
 				//gameLoop(hauteur,largeur, minRandom,maxRandom);
 				// En mode graphique
-				gameLoopSDL(hauteur,largeur,taquinFile, minRandom, maxRandom);
+				gameLoopSDL   (hauteur,largeur,taquinFile, minRandom, maxRandom);
 
 			}
 
