@@ -6,7 +6,22 @@
 #include "SDL.h"
 #include "SDL_image.h"
 
+Taquin* InitialTaquin(Taquin* _pTaquin)
+{
+	static Taquin* taq = NULL;
+	if (taq)
+		return taq;
 
+
+	taq = calloc(1, sizeof(Taquin));
+	if (!taq)
+		return NULL;
+
+	createTaquin(taq, _pTaquin->hauteur, _pTaquin->largeur);
+	initTaquin(taq);
+
+	return taq;
+}
 
 // fonction pour créer (allouer) un noeud de liste et l'initialiser avec le taquin passé en paramètre
 ptrListAStar createNodeList(Taquin * pTaquin, int gValue, int fValue, deplacement d, ptrListAStar pPrevPlay)
