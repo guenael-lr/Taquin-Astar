@@ -47,9 +47,6 @@ int equalTaquin(Taquin* _pTaquin1, Taquin* _pTaquin2)
 	return 1;
 }
 
-	return 1;
-}
-
 // Fonction qui crée un plateau de taquin 
 // ATTENTION le plateau doit être NULL avant l'appel à cette fonction 
 // Si le plateau n'est pas NULL la fonction essayera de libérer la zone mémoire occupée par le plateau et cela peut donc aboutir à un crash si le plateau n'a pas été initialisé
