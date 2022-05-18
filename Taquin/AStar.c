@@ -12,9 +12,12 @@
 ptrListAStar createNodeList(Taquin * pTaquin, int gValue, int fValue, deplacement d, ptrListAStar pPrevPlay)
 {
 	ptrListAStar node = calloc(1, sizeof(ListAStar));
+	Taquin taquin;
+	copyTaquin(pTaquin, &taquin);
+	moveTaquin(&taquin, d);
 	node->g = gValue;
 	node->f = fValue;
-	node->pTaquin;
+	node->pTaquin = taquin;
 	node->prev_d = d;
 	node->prev_node = pPrevPlay;
 	return node;
@@ -115,5 +118,6 @@ int h(Taquin * pTaquin)
 				tot += y - yy;
 		}
 
+	
 	return 0;
 }
