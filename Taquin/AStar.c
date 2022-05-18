@@ -28,7 +28,7 @@ ptrListAStar createNodeList(Taquin* pTaquin, int gValue, int fValue, deplacement
 {
 	ptrListAStar node = calloc(1, sizeof(ListAStar));
 	if (!node)
-		return 1;
+		return NULL;
 
 	copyTaquin(pTaquin, &(node->pTaquin));
 	moveTaquin(&(node->pTaquin), d);
@@ -48,12 +48,14 @@ int insertList(ptrListAStar* ppHead, ptrListAStar pNode, int tri)
 		return 1;
 	if (!tri || !(*ppHead)) {
 		pNode->post_node = (*ppHead);
-		ppHead = &(pNode);
+		(*ppHead) = pNode;
 		return 0;
 	}
+
 	ptrListAStar cursor = (*ppHead);
-	while (cursor->post_node && pNode->f > cursor->post_node->f)
-		cursor = &(cursor->post_node);
+
+	while (cursor->post_node != NULL && pNode->f >= cursor->post_node->f)
+		cursor = cursor->post_node;
 
 	pNode->post_node = cursor->post_node;
 	cursor->post_node = pNode;
@@ -132,23 +134,30 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 	ptrListAStar compare = NULL;
 	int g = 0;
 	int end = 0;
+	int accu = 10000;
 	while (!end) 
 	{
 		++g;
+		
+		if (g > accu)
+		{
+			printf("g = %d\n", g);
+			accu = accu + 10000;
+		}
+			
 		cursor = popList(&open);
 		insertList(&closed, cursor, 0);
 
 		for (int i = 1; i < 5; i++)
 		{
 			cursorchild = createNodeList(&(cursor->pTaquin), g, g + h(&(cursor->pTaquin)), i, cursor);
-			if (equalTaquin((&cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
+			
+			if (equalTaquin(&(cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
 			{
 				copyTaquin(&(cursorchild->pTaquin), pTaquin);
 				
 				printf("PRIVATE\n");
 				displayTaquin(&(cursorchild->pTaquin), 0);
-				//displayTaquin(InitialTaquin(&(cursor->pTaquin)), 0);
-
 
 				end = 1;
 				break;
@@ -167,7 +176,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 			
 			
 			insertList(&open, cursorchild, 1);
-			displayTaquin(&(cursorchild->pTaquin), 0);
+			//displayTaquin(&(cursorchild->pTaquin), 0);
 
 			//cursorchild = cursorchild->post_node;
 		}
@@ -183,12 +192,13 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 // fonction d'évaluation pour la résolution avec AStar
 int h(Taquin* pTaquin)
 {
-	int where, xx, yy, tot = 0;
+	//return 0;
+	int wherepute, xx, yy, tot = 0;
 	for (int x = 0; x < pTaquin->hauteur; ++x)
 		for (int y = 0; y < pTaquin->largeur; ++y) {
-			where = pTaquin->plateau[x][y];
-			xx = where % pTaquin->largeur;
-			yy = where / pTaquin->largeur;
+			wherepute = pTaquin->plateau[x][y];
+			xx = wherepute % pTaquin->largeur;
+			yy = wherepute / pTaquin->largeur;
 			tot += abs(xx - x) + abs(yy - y);
 		}
 
@@ -197,13 +207,22 @@ int h(Taquin* pTaquin)
 
 void freeList(ptrListAStar* ppHead)
 {
-	if (!ppHead || !(*ppHead))
-		return;
-	
-	freeList(&((*ppHead)->post_node));
+	ptrListAStar* iterator = ppHead;
+	ptrListAStar* tmp = NULL;
+	while ((*iterator)->post_node != NULL)
+	{
+		iterator = &((*iterator)->post_node);
+	}
+	while (iterator != ppHead)
+	{
+		freeTaquin(&((*iterator)->pTaquin));
+		tmp = &((*iterator)->prev_node);
+		free((*iterator)->post_node);
+		iterator = tmp;
+	}
 	freeTaquin(&((*ppHead)->pTaquin));
-	
 	free((*ppHead));
+	
 	(* ppHead) = NULL;
 	
 	return;

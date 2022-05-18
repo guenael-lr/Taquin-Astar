@@ -41,7 +41,7 @@ int equalTaquin(Taquin* _pTaquin1, Taquin* _pTaquin2)
 
 	for (int x = 0; x < _pTaquin1->largeur; x++)
 	{
-		for (int y = 0; y < _pTaquin1->largeur; y++)
+		for (int y = 0; y < _pTaquin1->hauteur; y++)
 			if (_pTaquin1->plateau[x][y] != _pTaquin2->plateau[x][y])
 			{
 				return 0;
