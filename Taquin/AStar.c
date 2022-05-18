@@ -51,12 +51,12 @@ int insertList(ptrListAStar* ppHead, ptrListAStar pNode, int tri)
 		ppHead = &(pNode);
 		return 0;
 	}
-	ptrListAStar* cursor = ppHead;
-	while ((*cursor)->post_node && pNode->f > (*cursor)->post_node->f)
-		cursor = &(*cursor)->post_node;
+	ptrListAStar cursor = (*ppHead);
+	while (cursor->post_node && pNode->f > cursor->post_node->f)
+		cursor = &(cursor->post_node);
 
-	pNode->post_node = (*cursor)->post_node;
-	(*cursor)->post_node = pNode;
+	pNode->post_node = cursor->post_node;
+	cursor->post_node = pNode;
 
 	return 0;
 }
@@ -165,7 +165,9 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 				continue; //on abandonne l'enfant
 			}
 			
+			
 			insertList(&open, cursorchild, 1);
+			//displayTaquin(&(cursorchild->pTaquin), 0);
 
 			//cursorchild = cursorchild->post_node;
 		}
