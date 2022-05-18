@@ -76,15 +76,18 @@ int displayList(ptrListAStar pHead, int displayFGH)
 // pWindow
 int solveTaquin(Taquin *pTaquin, deplacement ** pTabDeplacement, unsigned long *pNbDeplacements, unsigned long * pNbTaquinsGeneres, unsigned long * pTimeElapsed, int stepByStep, SDL_Surface * pWindow)
 {
-	int heu = h(pTaquin);
 	ptrListAStar closed = createNodeList(pTaquin, 0, 0, AUCUN, NULL);
-	ptrListAStar open = createNodeList(pTaquin, 0, heu, AUCUN, NULL);
+	ptrListAStar open = createNodeList(pTaquin, 0, h(pTaquin), AUCUN, NULL);
 	ptrListAStar cursor = NULL;
-
+	int g = 0;
 	while (open) {
 		cursor = popList(&open);
 		insertList(&closed, cursor,1);
-
+		++g;
+		for (int i = 1; i < 5; i++)
+		{
+			insertList(&open,createNodeList(&(cursor->pTaquin), g, g + h(&(cursor->pTaquin)), i, cursor),1);
+		}
 
 
 	}
@@ -96,6 +99,21 @@ int solveTaquin(Taquin *pTaquin, deplacement ** pTabDeplacement, unsigned long *
 // fonction d'évaluation pour la résolution avec AStar
 int h(Taquin * pTaquin)
 {
+	int where, xx, yy, tot = 0;
+	for (int x = 0; x < pTaquin->hauteur; ++x)
+		for (int y = 0; y < pTaquin->largeur; ++y) {
+			where = pTaquin->plateau[x][y];
+			xx = (where+1) % pTaquin->largeur;
+			yy = (where+1) / pTaquin->largeur;
+			if (xx > x)
+				tot += xx - x;
+			else
+				tot += x - xx;
+			if (yy > y)
+				tot += yy - y;
+			else
+				tot += y - yy;
+		}
 
 	return 0;
 }
