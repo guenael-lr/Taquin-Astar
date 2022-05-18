@@ -60,7 +60,7 @@ ptrListAStar popList(ptrListAStar * ppHead)
 ptrListAStar * isInList(ptrListAStar * ppHead, Taquin * pTaquin)
 {
 	ptrListAStar* cursor = ppHead;
-	while (memcmp(&(pTaquin), &((*cursor)->pTaquin), sizeof(Taquin)))
+	while (equalTaquin(pTaquin, &((*cursor)->pTaquin)))
 		cursor = &((*cursor)->post_node);
 	
 	return cursor;
@@ -110,7 +110,7 @@ int solveTaquin(Taquin *pTaquin, deplacement ** pTabDeplacement, unsigned long *
 		for (int i = 1; i < 5; i++)
 		{
 			cursorchild = createNodeList(&(cursor->pTaquin), g, g + h(&(cursor->pTaquin)), i, cursor);
-			if(!equalTaquin((&cursorchild->pTaquin), );
+			if(!equalTaquin((&cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
 				continue;
 
 			if (isInList(open, &(cursorchild->pTaquin))) //si la board existe deja bon on s'en bas un peu la race a mais quoique deuxieme est ce que le score mais au final flemme je suppose
