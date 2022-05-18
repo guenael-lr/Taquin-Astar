@@ -15,18 +15,18 @@
 // On a besoin des structures et des fonctions pour gérer le taquin, on inclut donc la biblilothèque
 #include "Taquin.h"
 #include "SDL.h"
-
+typedef struct sListAStar ListAStar;
 typedef ListAStar* ptrListAStar;		// Redéfinition pour faciliter l'écriture dans les en-têtes des fonctions
 
 // Structure de donnée pour réprésenter un noeud de liste en mémoire
-typedef struct sListAStar {
+struct sListAStar {
 	int g;				// Distance déjà parcourue entre l'état initial et l'état courant
 	int f;				// Evaluation de la distance à parcourir entre l'état initial et l'état final
 	Taquin pTaquin;				// Taquin contenu dans le noeud courant
 	deplacement prev_d;			// dernier déplacement effectué pour arriver à ce taquin
 	ptrListAStar prev_node;		// Pointeur vers le noeud correspondant à l'étape précédente dans la solution
 	ptrListAStar post_node;		// Pointeur vers le noeud suivant (liste simplement chaînée)
-}ListAStar;
+};
 
 
 
