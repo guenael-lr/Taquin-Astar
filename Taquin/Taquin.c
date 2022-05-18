@@ -35,16 +35,20 @@ int copyTaquin(Taquin* _pSrc, Taquin* _pDest)
 int equalTaquin(Taquin* _pTaquin1, Taquin* _pTaquin2)
 {
 	if (!_pTaquin1 || !_pTaquin2)
-		return 0;
+		return -1;
 	if (_pTaquin1->hauteur != _pTaquin2->hauteur || _pTaquin1->largeur != _pTaquin2->largeur)
-		return 0;
+		return -1;
 
 	for (int x = 0; x < _pTaquin1->largeur; x++)
-		for (int y = 0; y < _pTaquin1->largeur; y++)
+	{
+		for (int y = 0; y < _pTaquin1->hauteur; y++)
 			if (_pTaquin1->plateau[x][y] != _pTaquin2->plateau[x][y])
+			{
 				return 0;
-
+			}
+	}
 	return 1;
+
 }
 
 
