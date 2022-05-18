@@ -34,14 +34,17 @@ int copyTaquin(Taquin * _pSrc, Taquin * _pDest)
 // -1 si il y a une erreur au passage des paramètres
 int equalTaquin(Taquin * _pTaquin1, Taquin * _pTaquin2)
 {
+	if (!_pTaquin1->plateau || !_pTaquin2)
+		return 0;
 	if (_pTaquin1->hauteur != _pTaquin2->hauteur || _pTaquin1->largeur != _pTaquin2->largeur)
-		return -1;
+		return 0;
 
 	for (int x = 0; x < _pTaquin1->largeur; x++)
-			if(!memcmp(_pTaquin1->plateau[x], _pTaquin2->plateau[x], sizeof(Uint8*)*_pTaquin1->hauteur))
-				return -1;
+		for (int y = 0; y < _pTaquin1->largeur; y++)
+			if (_pTaquin1->plateau[x][y] != _pTaquin2->plateau[x][y])
+				return 0;
 
-	return 0;
+	return 1;
 }
 
 // Fonction qui crée un plateau de taquin 

@@ -80,7 +80,7 @@ ptrListAStar* isInList(ptrListAStar* ppHead, Taquin* pTaquin)
 	if (!cursor || !(*cursor))
 		return NULL;
 
-	while (!equalTaquin(pTaquin, &((*cursor)->pTaquin)))
+	while (equalTaquin(pTaquin, &((*cursor)->pTaquin)))
 	{
 		if (!((*cursor)->post_node))
 			cursor = &((*cursor)->post_node);
@@ -137,8 +137,9 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 		for (int i = 1; i < 5; i++)
 		{
 			cursorchild = createNodeList(&(cursor->pTaquin), g, g + h(&(cursor->pTaquin)), i, cursor);
-			if (!equalTaquin((&cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
+			if (equalTaquin((&cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
 			{
+				displayTaquin(&cursorchild->pTaquin,1);
 				pTaquin = &(cursorchild->pTaquin);
 				end = 1;
 				break;
