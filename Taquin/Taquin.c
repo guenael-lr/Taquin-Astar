@@ -34,7 +34,7 @@ int copyTaquin(Taquin* _pSrc, Taquin* _pDest)
 // -1 si il y a une erreur au passage des paramètres
 int equalTaquin(Taquin* _pTaquin1, Taquin* _pTaquin2)
 {
-	if (!_pTaquin1->plateau || !_pTaquin2)
+	if (!_pTaquin1 || !_pTaquin2)
 		return 0;
 	if (_pTaquin1->hauteur != _pTaquin2->hauteur || _pTaquin1->largeur != _pTaquin2->largeur)
 		return 0;
@@ -47,8 +47,6 @@ int equalTaquin(Taquin* _pTaquin1, Taquin* _pTaquin2)
 	return 1;
 }
 
-	return 1;
-}
 
 // Fonction qui crée un plateau de taquin 
 // ATTENTION le plateau doit être NULL avant l'appel à cette fonction 

@@ -42,7 +42,7 @@ int insertList(ptrListAStar * ppHead, ptrListAStar pNode, int tri);
 ptrListAStar popList(ptrListAStar * ppHead);
 
 // fonction qui retourne le noeud dans lequel on trouve le taquin passé en paramètre (pointeur sur le pointeur dans la liste)
-ptrListAStar * isInList(ptrListAStar * ppHead, Taquin * pTaquin);
+ptrListAStar isInList(ptrListAStar * ppHead, Taquin * pTaquin);
 
 // fonction pour afficher une liste
 // si on met displayFGH à 0 les valeur de F, G et H ne sont pas affichées
