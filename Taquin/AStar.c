@@ -68,7 +68,7 @@ ptrListAStar popList(ptrListAStar* ppHead)
 	if (!ppHead || !(*ppHead))
 		return NULL;
 	ptrListAStar node = (*ppHead);
-	ppHead = &(node->post_node);
+	(*ppHead) = node->post_node;
 
 	return node;
 }
@@ -167,7 +167,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 			
 			
 			insertList(&open, cursorchild, 1);
-			//displayTaquin(&(cursorchild->pTaquin), 0);
+			displayTaquin(&(cursorchild->pTaquin), 0);
 
 			//cursorchild = cursorchild->post_node;
 		}
