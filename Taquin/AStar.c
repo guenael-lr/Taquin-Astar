@@ -164,9 +164,10 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 				freeList(&cursorchild);
 				continue; //on abandonne l'enfant
 			}
-			cursorchild = cursorchild->post_node;
 			
 			insertList(&open, cursorchild, 1);
+
+			//cursorchild = cursorchild->post_node;
 		}
 		//NOW need to recompose the way
 
