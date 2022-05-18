@@ -103,6 +103,7 @@ int displayCaseTaquin(TaquinSDL * _pTaquinSDL,Uint8 _caseTaquin, SDL_Rect * _pDe
 		SDL_Surface* black_sruface = SDL_CreateRGBSurface(0, _pTaquinSDL->resX, _pTaquinSDL->resY, 32, 0, 0, 0, 0);
 		SDL_MapRGB(black_sruface->format, 0, 0, 0);
 		SDL_LowerBlit(black_sruface, &imgToPaste, _pTaquinSDL->pWindow, _pDest);
+		SDL_FreeSurface(black_sruface);
 	}
 	
 

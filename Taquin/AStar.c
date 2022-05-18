@@ -127,7 +127,9 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 	ptrListAStar cursorchild = NULL;
 	ptrListAStar compare = NULL;
 	int g = 0;
-	while (1) {
+	int end = 0;
+	while (!end) 
+	{
 		++g;
 		cursor = popList(&open);
 		insertList(&closed, cursor, 0);
@@ -136,7 +138,10 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 		{
 			cursorchild = createNodeList(&(cursor->pTaquin), g, g + h(&(cursor->pTaquin)), i, cursor);
 			if (!equalTaquin((&cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
-				continue;
+			{
+				end = 1;
+				break;
+			}
 			compare = isInList(&open, &(cursorchild->pTaquin));
 			if (compare) //si la board existe deja bon on s'en bas un peu la race a mais quoique deuxieme est ce que le score mais au final flemme je suppose
 				continue; //on abandonne l'enfant
@@ -151,7 +156,8 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 
 
 	}
-
+	freeList(&open);
+	freeList(&closed);
 
 	return 1;
 }
@@ -169,4 +175,18 @@ int h(Taquin* pTaquin)
 		}
 
 	return tot;
+}
+
+void freeList(ptrListAStar* ppHead)
+{
+	if (!ppHead || !(*ppHead))
+		return;
+	
+	freeList(&((*ppHead)->post_node));
+	freeTaquin(&((*ppHead)->pTaquin));
+	
+	free((*ppHead));
+	*ppHead == NULL;
+	
+	return;
 }

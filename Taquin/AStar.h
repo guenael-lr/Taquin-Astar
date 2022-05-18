@@ -62,5 +62,7 @@ int solveTaquin(Taquin *pTaquin, deplacement ** pTabDeplacement, unsigned long *
 // fonction d'évaluation pour la résolution avec AStar
 int h(Taquin * pTaquin);
 
+void freeList(ptrListAStar* ppHead);
+
 
 #endif
