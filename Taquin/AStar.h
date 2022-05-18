@@ -22,8 +22,8 @@ typedef struct sListAStar {
 	int f;				// Evaluation de la distance à parcourir entre l'état initial et l'état final
 	Taquin pTaquin;				// Taquin contenu dans le noeud courant
 	deplacement prev_d;			// dernier déplacement effectué pour arriver à ce taquin
-	ptrListAStar prev_node;		// Pointeur vers le noeud correspondant à l'étape précédente dans la solution
-	ptrListAStar post_node;		// Pointeur vers le noeud suivant (liste simplement chaînée)
+	struct ListAStar * prev_node;		// Pointeur vers le noeud correspondant à l'étape précédente dans la solution
+	struct ListAStar * post_node;		// Pointeur vers le noeud suivant (liste simplement chaînée)
 }ListAStar;
 
 typedef ListAStar * ptrListAStar;		// Redéfinition pour faciliter l'écriture dans les en-têtes des fonctions
