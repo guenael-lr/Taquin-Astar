@@ -27,7 +27,11 @@ ptrListAStar createNodeList(Taquin * pTaquin, int gValue, int fValue, deplacemen
 // si on passe le paramètre tri à 0, on insère en tête de liste
 int insertList(ptrListAStar * ppHead, ptrListAStar pNode, int tri)
 {
-	if (!tri || (*ppHead)->f > pNode->f) {
+	if (!(*ppHead)) {
+		ppHead = &(pNode);
+		return 0;
+	}
+	if (!tri) {
 		pNode->post_node = (*ppHead);
 		ppHead = &(pNode);
 		return 0;
@@ -79,7 +83,7 @@ int displayList(ptrListAStar pHead, int displayFGH)
 // pWindow
 int solveTaquin(Taquin *pTaquin, deplacement ** pTabDeplacement, unsigned long *pNbDeplacements, unsigned long * pNbTaquinsGeneres, unsigned long * pTimeElapsed, int stepByStep, SDL_Surface * pWindow)
 {
-	ptrListAStar closed = createNodeList(pTaquin, 0, 0, AUCUN, NULL);
+	ptrListAStar closed = NULL;
 	ptrListAStar open = createNodeList(pTaquin, 0, h(pTaquin), AUCUN, NULL);
 	ptrListAStar cursor = NULL;
 	int g = 0;
@@ -117,7 +121,6 @@ int h(Taquin * pTaquin)
 			else
 				tot += y - yy;
 		}
-
 	
-	return 0;
+	return tot;
 }
