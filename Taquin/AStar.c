@@ -65,6 +65,8 @@ int insertList(ptrListAStar * ppHead, ptrListAStar pNode, int tri)
 // Retourne le noeud prélevé
 ptrListAStar popList(ptrListAStar * ppHead)
 {
+	if (!ppHead || !(*ppHead))
+		return NULL;
 	ptrListAStar node = (*ppHead);
 	ppHead = &(node->post_node);
 
