@@ -38,7 +38,7 @@ int equalTaquin(Taquin * _pTaquin1, Taquin * _pTaquin2)
 		return -1;
 
 	for (int x = 0; x < _pTaquin1->largeur; x++)
-			if(!memcmp(_pTaquin1->plateau[x], _pTaquin1->plateau[x], sizeof(Uint8*)*_pTaquin1->hauteur))
+			if(!memcmp(_pTaquin1->plateau[x], _pTaquin2->plateau[x], sizeof(Uint8*)*_pTaquin1->hauteur))
 				return -1;
 
 	return 0;
