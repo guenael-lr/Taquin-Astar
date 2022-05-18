@@ -63,49 +63,78 @@ int createTaquinSDL(TaquinSDL * pTaquinSDL,int hauteur, int largeur, char * path
 }
 
 
-int displayCaseTaquin(TaquinSDL * pTaquinSDL,Uint8 caseTaquin, SDL_Rect * pDest, int x, int y, int refresh)
+int displayCaseTaquin(TaquinSDL * _pTaquinSDL,Uint8 _caseTaquin, SDL_Rect * _pDest, int _x, int _y, int _refresh)
 {
-	// TODO: displayCaseTaquin
 	// on définit où on veut la dessiner
+	{
+		SDL_Rect destination = {
+			_x * _pTaquinSDL->resX,
+			_y * _pTaquinSDL->resY,
+			_pTaquinSDL->resX,
+			_pTaquinSDL->resY 
+		};
 
+		*_pDest = destination;
+	}
+
+	int posX = _caseTaquin % _pTaquinSDL->taquin.largeur;
+	int posY = _caseTaquin / _pTaquinSDL->taquin.largeur;
+
+	SDL_Rect imgToPaste = {
+		posX * _pTaquinSDL->resX,
+		posY * _pTaquinSDL->resY,
+		_pTaquinSDL->resX,
+		_pTaquinSDL->resY 
+	};
 
 	// Si la case n'est pas vide ...
-	// on calcule où est la case "caseTaquin" dans l'image initiale pour -par la suite - venir découper la zone qui correspond à la case
+	if (_pTaquinSDL->taquin.plateau[_x][_y] != 0)
+	{
+		// on calcule où est la case "caseTaquin" dans l'image initiale pour -par la suite - venir découper la zone qui correspond à la case
+
+		// On dessine la case dans la fenêtre (en découpant dans l'image initiale avec la zone définie ci-dessus)
+		SDL_LowerBlit(_pTaquinSDL->pFond, &imgToPaste, _pTaquinSDL->pWindow, _pDest);
+
+	}
+	else
+	{
+		SDL_Surface* black_sruface = SDL_CreateRGBSurface(0, _pTaquinSDL->resX, _pTaquinSDL->resY, 32, 0, 0, 0, 0);
+		SDL_MapRGB(black_sruface->format, 0, 0, 0);
+		SDL_LowerBlit(black_sruface, &imgToPaste, _pTaquinSDL->pWindow, _pDest);
+	}
 	
-	// ... 
 
-	// On dessine la case dans la fenêtre (en découpant dans l'image initiale avec la zone définie ci-dessus)
-
-	if(refresh) SDL_UpdateRect(pTaquinSDL->pWindow,pDest->x,pDest->y,pDest->w,pDest->h);
+	if(_refresh) SDL_UpdateRect(_pTaquinSDL->pWindow,_pDest->x,_pDest->y,_pDest->w,_pDest->h);
 
 	return 1;
 }
 
 // fonction pour rendre le taquin dans son état actuel
-int displayTaquinSDL(TaquinSDL * pTaquinSDL)
+int displayTaquinSDL(TaquinSDL * _pTaquinSDL)
 {
 	// Test pour vérifier que les données passées ne sont pas corrompues
-	if(!pTaquinSDL || !pTaquinSDL->taquin.plateau || !pTaquinSDL->pWindow ) return 0;
+	if(!_pTaquinSDL || !_pTaquinSDL->taquin.plateau || !_pTaquinSDL->pWindow ) return 1;
 
 	// On dessine les cases une par une en allant découper l'image de fond avec un SDL_Rect
 	{
 
-
-		// On dessine le taquin terminé pour afficher quelque chose mais il faudra le changer
-		SDL_BlitSurface(pTaquinSDL->pFond,NULL,pTaquinSDL->pWindow,NULL);
-
-		// TODO: displayTaquinSDL
-		// ...
-
+		SDL_Rect dest;
+		for (int x = 0; x < _pTaquinSDL->taquin.largeur; x++)
+		{
+			for (int y = 0; y < _pTaquinSDL->taquin.hauteur; y++)
+			{
+				displayCaseTaquin(_pTaquinSDL, _pTaquinSDL->taquin.plateau[x][y], &dest, x, y, 0);
+			}
+		}
 
 
 		// On met à jour la fenêtre complète
-		SDL_UpdateRect(pTaquinSDL->pWindow,0,0,0,0);
+		SDL_UpdateRect(_pTaquinSDL->pWindow,0,0,0,0);
 
 	}
 
 
-	return 1;
+	return 0;
 }
 
 // fonction permettant de faire le rendu SDL du taquin et de jouer (gestion des évènements à l'intérieur de la fonction)
@@ -143,7 +172,6 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 
 			while(!end && SDL_PollEvent(&e))
 			{
-
 				switch(e.type)
 				{
 					case SDL_KEYDOWN:
@@ -175,7 +203,6 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 									// - Arrêter la résolution (appui sur n'importe qu'elle touche
 									// - Quitter l'application (ECHAP ou CROIX en haut à droite)
 									{
-										
 										//on initialise les variables permettant de récupérer les informations issues de la résolution
 										deplacement * tabDeplacements = NULL;
 										unsigned long nbDeplacements = 0;
@@ -220,15 +247,12 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 											tabDeplacements = NULL;
 										}
 									}
-
 									break;
 							}
-							
 							if (d != AUCUN && !moveTaquin(&(t.taquin), d)) {
 								displayTaquinSDL(&t);
 								displayTaquin(&(t.taquin), 0);
 							}
-
 						}
 						break;
 
@@ -236,27 +260,35 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 						{
 							// On récupère la position et l'état des boutons de la souris
 							int x,y;
-							Uint8 state;
-							state = SDL_GetMouseState(&x,&y);
+							Uint8 state = SDL_GetMouseState(&x,&y);
 
 							if(state & SDL_BUTTON_LEFT)
 							{
-
 								deplacement d = AUCUN;
 
 								// On récupère la position de la case dans le taquin
-								int posX = x/t.resX;
-								int posY = y/t.resY;
+								x = x/t.resX;
+								y = y/t.resY;
 
-								// TODO: On définit le déplacement à effectuer (différence en X de +/- 1 ou en Y de +/-1 => DEPLACEMENT sinon AUCUN)
-								
-								// ...
-									
+								if (t.taquin.x == x)
+								{
+									if (t.taquin.y + 1 == y)
+										d = BAS;
+									else if (t.taquin.y - 1 == y)
+										d = HAUT;
+								}
+								if (t.taquin.y == y)
+								{
+									if (t.taquin.x + 1 == x)
+										d = DROITE;
+									else if (t.taquin.x - 1 == x)
+										d = GAUCHE;
+								}
 								// On applique le déplacement
-								if (moveTaquin(&(t.taquin), d))
+								if (!moveTaquin(&(t.taquin), d))
 								{
 									displayTaquinSDL(&t);
-									displayTaquin(&(t.taquin), 0);
+									displayTaquin(&(t.taquin), 0); 
 								}
 							}
 						}
@@ -268,32 +300,30 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 						break;
 				}
 			}
-
 			// On relache du temps processeur pour les autres processus
 			SDL_Delay(1);
 
-			if(!end) end = endTaquin(&(t.taquin));
-
+			if(!end) 
+				end = endTaquin(&(t.taquin));
 		}
 
 		// Si on n'a pas demandé à quitter c'est qu'on a terminé le taquin
 		if(end>0)
 		{
 			// Affichage de l'image complète par dessus le tout
-
+			SDL_Rect rect = { 0, 0, t.pFond->w, t.pFond->h };
+			SDL_LowerBlit(t.pFond, &rect, t.pWindow, &rect);
+			SDL_UpdateRect(t.pWindow, 0, 0, 0, 0);
 			SDL_Delay(1000);
 		}
-
 		// On réinitialise le taquin pour le prochain tour de jeu
 		initTaquin(&(t.taquin));
 	}
-
 	// On libère le taquin et les surfaces SDL
 	freeTaquinSDL(&t);
 
 	/* Shut them both down */
 	SDL_Quit();
-
 
 	return 1;
 }
