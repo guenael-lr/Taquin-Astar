@@ -141,6 +141,7 @@ int displayTaquinSDL(TaquinSDL * _pTaquinSDL)
 int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int maxRandom)
 {
 	int end = 0;
+	SDL_Event e;
 	TaquinSDL t;
 
 	// On crée le taquin et la fenêtre pour le dessiner
@@ -165,7 +166,7 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 		while(!end )
 		{
 			// Gestion des évènements
-			SDL_Event e;
+			
 
 			int dt = SDL_GetTicks()-tick;
 			tick +=dt;
@@ -314,7 +315,11 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 			SDL_Rect rect = { 0, 0, t.pFond->w, t.pFond->h };
 			SDL_LowerBlit(t.pFond, &rect, t.pWindow, &rect);
 			SDL_UpdateRect(t.pWindow, 0, 0, 0, 0);
-			SDL_Delay(1000);
+			while (e.key.keysym.sym != SDLK_RETURN)
+			{
+				SDL_PollEvent(&e);
+			}
+			//SDL_Delay(1000);
 		}
 		// On réinitialise le taquin pour le prochain tour de jeu
 		initTaquin(&(t.taquin));
