@@ -207,18 +207,17 @@ int h(Taquin* pTaquin)
 
 void freeList(ptrListAStar* ppHead)
 {
-	ptrListAStar* iterator = ppHead;
-	ptrListAStar* tmp = NULL;
-	while ((*iterator)->post_node != NULL)
+	//ptrListAStar* iterator = ppHead;
+	ptrListAStar tmp = NULL;
+
+	while ((*ppHead)->post_node != NULL)
 	{
-		iterator = &((*iterator)->post_node);
-	}
-	while (iterator != ppHead)
-	{
-		freeTaquin(&((*iterator)->pTaquin));
-		tmp = &((*iterator)->prev_node);
-		free((*iterator)->post_node);
-		iterator = tmp;
+		freeTaquin(&((*ppHead)->pTaquin));
+		tmp = (*ppHead)->post_node;
+		free((*ppHead));
+		(*ppHead) = tmp;
+		if (!ppHead)
+			break;
 	}
 	freeTaquin(&((*ppHead)->pTaquin));
 	free((*ppHead));
