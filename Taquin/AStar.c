@@ -27,14 +27,17 @@ ptrListAStar createNodeList(Taquin * pTaquin, int gValue, int fValue, deplacemen
 // si on passe le paramètre tri à 0, on insère en tête de liste
 int insertList(ptrListAStar * ppHead, ptrListAStar pNode, int tri)
 {
-	if (!tri || !(*ppHead) ||(*ppHead)->f > pNode->f) {
+	if (!pNode)
+		return 1;
+	if (!tri || !(*ppHead)) {
 		pNode->post_node = (*ppHead);
 		ppHead = &(pNode);
 		return 0;
 	}
 	ptrListAStar* cursor = ppHead;
-	while (pNode->f >= (*cursor)->post_node->f)
+	while ((*cursor)->post_node && pNode->f > (*cursor)->post_node->f)
 		cursor = (*cursor)->post_node;
+
 	pNode->post_node = (*cursor)->post_node;
 	(*cursor)->post_node = pNode;
 
