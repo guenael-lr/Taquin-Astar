@@ -44,7 +44,7 @@ ptrListAStar createNodeList(Taquin* pTaquin, int gValue, int fValue, deplacement
 // si on passe le paramètre tri à 0, on insère en tête de liste
 int insertList(ptrListAStar* ppHead, ptrListAStar pNode, int tri)
 {
-	if (!pNode)
+	if (!pNode || !ppHead)
 		return 1;
 	if (!tri || !(*ppHead)) {
 		pNode->post_node = (*ppHead);
@@ -147,6 +147,9 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 			
 		cursor = popList(&open);
 		insertList(&closed, cursor, 0);
+		
+		//displayTaquin(&(cursor->pTaquin), 0);
+		
 
 		for (int i = 1; i < 5; i++)
 		{
@@ -192,14 +195,14 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 // fonction d'évaluation pour la résolution avec AStar
 int h(Taquin* pTaquin)
 {
-	//return 0;
+	return 0;
 	int wherepute, xx, yy, tot = 0;
 	for (int x = 0; x < pTaquin->hauteur; ++x)
 		for (int y = 0; y < pTaquin->largeur; ++y) {
 			wherepute = pTaquin->plateau[x][y];
 			xx = wherepute % pTaquin->largeur;
 			yy = wherepute / pTaquin->largeur;
-			tot += abs(xx - x) + abs(yy - y);
+			tot += (xx - x)*(xx-x) + (yy - y)*(yy - y);
 		}
 
 	return tot;
