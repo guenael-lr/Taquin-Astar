@@ -74,20 +74,24 @@ ptrListAStar popList(ptrListAStar* ppHead)
 }
 
 // fonction qui retourne le noeud dans lequel on trouve le taquin passé en paramètre (pointeur sur le pointeur dans la liste)
-ptrListAStar* isInList(ptrListAStar* ppHead, Taquin* pTaquin)
+ptrListAStar isInList(ptrListAStar* ppHead, Taquin* pTaquin)
 {
-	ptrListAStar* cursor = ppHead;
-	if (!cursor || !(*cursor))
+	if (!ppHead || !(*ppHead))
 		return NULL;
 
-	while (equalTaquin(pTaquin, &((*cursor)->pTaquin)))
+	if (equalTaquin(pTaquin, &((*ppHead)->pTaquin)))
+		return *ppHead;
+
+	while ((*ppHead)->post_node)
 	{
-		if (!((*cursor)->post_node))
-			cursor = &((*cursor)->post_node);
-		else
-			return NULL;
+		
+		if (equalTaquin(pTaquin, &((*ppHead)->pTaquin)))
+			return *ppHead;
+
+		ppHead = &((*ppHead)->post_node);
+
 	}
-	return cursor;
+	return NULL;
 }
 
 // fonction pour afficher une liste
@@ -160,8 +164,6 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 		}
 		//NOW need to recompose the way
 
-
-
 	}
 	freeList(&open);
 	freeList(&closed);
@@ -193,7 +195,7 @@ void freeList(ptrListAStar* ppHead)
 	freeTaquin(&((*ppHead)->pTaquin));
 	
 	free((*ppHead));
-	*ppHead == NULL;
+	(* ppHead) = NULL;
 	
 	return;
 }
