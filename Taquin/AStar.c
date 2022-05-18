@@ -139,6 +139,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 			cursorchild = createNodeList(&(cursor->pTaquin), g, g + h(&(cursor->pTaquin)), i, cursor);
 			if (!equalTaquin((&cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
 			{
+				pTaquin = &(cursorchild->pTaquin);
 				end = 1;
 				break;
 			}
