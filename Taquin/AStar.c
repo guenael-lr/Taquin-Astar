@@ -102,25 +102,28 @@ int solveTaquin(Taquin *pTaquin, deplacement ** pTabDeplacement, unsigned long *
 	ptrListAStar cursor = NULL;
 	ptrListAStar cursorchild = NULL;
 	int g = 0;
-	while (open) {
+	while (1) {
 		++g;
 		cursor = popList(&open);
-		insertList(&closed, cursor,1);
+		insertList(&closed, cursor,0);
 		
 		for (int i = 1; i < 5; i++)
 		{
-			insertList(&open,createNodeList(&(cursor->pTaquin), g, g + h(&(cursor->pTaquin)), i, cursor),1);
-		}
-		cursorchild = open->post_node;
-		while(cursorchild) {
-			//check if finished return 1;
-			
-			if(isInList(open, &(cursor->pTaquin)))
-				return 1; //supprimer l'enfant
-			if(isInList(closed, &(cursor->pTaquin)))
-				return 2;
+			cursorchild = createNodeList(&(cursor->pTaquin), g, g + h(&(cursor->pTaquin)), i, cursor);
+			if(!equalTaquin((&cursorchild->pTaquin), );
+				continue;
+
+			if (isInList(open, &(cursorchild->pTaquin))) //si la board existe deja bon on s'en bas un peu la race a mais quoique deuxieme est ce que le score mais au final flemme je suppose
+				continue; //on abandonne l'enfant
+			if (isInList(closed, &(cursorchild->pTaquin)))
+				continue; //on abandonne l'enfant
 			cursorchild = cursorchild->post_node;
+
+			insertList(&open, cursorchild,1);
 		}
+		
+
+		
 
 	}
 
@@ -135,16 +138,9 @@ int h(Taquin * pTaquin)
 	for (int x = 0; x < pTaquin->hauteur; ++x)
 		for (int y = 0; y < pTaquin->largeur; ++y) {
 			where = pTaquin->plateau[x][y];
-			xx = (where+1) % pTaquin->largeur;
-			yy = (where+1) / pTaquin->largeur;
-			if (xx > x)
-				tot += xx - x;
-			else
-				tot += x - xx;
-			if (yy > y)
-				tot += yy - y;
-			else
-				tot += y - yy;
+			xx = where % pTaquin->largeur;
+			yy = where / pTaquin->largeur;
+			tot += abs(xx - x) + abs(yy - y);
 		}
 	
 	return tot;
