@@ -155,9 +155,15 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 			}
 			compare = isInList(&open, &(cursorchild->pTaquin));
 			if (compare) //si la board existe deja bon on s'en bas un peu la race a mais quoique deuxieme est ce que le score mais au final flemme je suppose
+			{
+				freeList(&cursorchild);
 				continue; //on abandonne l'enfant
+			}
 			if (isInList(&closed, &(cursorchild->pTaquin)))
+			{
+				freeList(&cursorchild);
 				continue; //on abandonne l'enfant
+			}
 			cursorchild = cursorchild->post_node;
 			
 			insertList(&open, cursorchild, 1);
