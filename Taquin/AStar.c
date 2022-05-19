@@ -174,18 +174,6 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 					freeList(&cursorchild);
 					continue;
 				}
-				
-				//compare = isInList(&open, &(cursorchild->pTaquin));
-				//if (compare)  //si la board existe deja bon on s'en bas un peu la race a mais quoique deuxieme est ce que le score mais au final flemme je suppose
-				//{
-				//	if (compare->f > cursorchild->f) 
-				//	{
-				//		compare->f = cursorchild->f;
-				//		compare->g = cursorchild->g;
-				//	}
-				//	freeList(&cursorchild);
-				//	continue; //on abandonne l'enfant
-				//}
 				compare = isInList(&closed, &(cursorchild->pTaquin));
 				if (compare)
 				{
