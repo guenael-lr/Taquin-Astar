@@ -31,7 +31,10 @@ ptrListAStar createNodeList(Taquin* pTaquin, int gValue, int fValue, deplacement
 		return NULL;
 
 	copyTaquin(pTaquin, &(node->pTaquin));
-	moveTaquin(&(node->pTaquin), d);
+	if (moveTaquin(&(node->pTaquin), d))
+	{
+		free(node);
+	}
 
 	node->g = gValue;
 	node->f = gValue + h(&(node->pTaquin));
@@ -228,14 +231,12 @@ void freeList(ptrListAStar* ppHead)
 	//ptrListAStar* iterator = ppHead;
 	ptrListAStar tmp = NULL;
 
-	while (*ppHead != NULL)
+	while (*ppHead)
 	{
 		freeTaquin(&((*ppHead)->pTaquin));
 		tmp = (*ppHead)->post_node;
 		free((*ppHead));
 		(*ppHead) = tmp;
-		if (!ppHead)
-			break;
 	}
 
 	
