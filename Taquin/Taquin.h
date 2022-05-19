@@ -21,7 +21,7 @@
 #define VIDE 0
 
 typedef unsigned char Uint8;
-
+typedef unsigned long long Uint64;
 // Type redéfini pour sélectionner le déplacement à effectuer
 typedef enum{AUCUN, GAUCHE, DROITE, HAUT, BAS} deplacement;
 
@@ -32,8 +32,11 @@ typedef struct sTaquin {
 	Uint8** plateau;			// Tableau contenant le taquin (
 	Uint8 hauteur,largeur;		// Taille du plateau
 	Uint8 x,y;					// Position de la case vide à déplacer
+	Uint64 id;
 } Taquin;
 
+
+Uint64 hash(Taquin* _pTaquin);
 
 // Fonction pour copier un plateau de taquin pSrc vers pDest
 int copyTaquin(Taquin * _pSrc, Taquin * _pDest);
@@ -42,6 +45,11 @@ int copyTaquin(Taquin * _pSrc, Taquin * _pDest);
 // 0 sinon
 // -1 si il y a une erreur au passage des paramètres
 int equalTaquin(Taquin * _pTaquin1, Taquin * _pTaquin2);
+
+// fonction qui renvoie 1 si les 2 taquins sont identiques
+// 0 sinon
+// -1 si il y a une erreur au passage des paramètres
+int equalIdTaquin(Taquin* _pTaquin1, Taquin* _pTaquin2);
 
 // Fonction qui crée un plateau de taquin 
 // ATTENTION le plateau doit être NULL avant l'appel à cette fonction 

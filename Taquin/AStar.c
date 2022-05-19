@@ -165,7 +165,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 					freeList(&cursorchild);
 					continue;
 				}
-				if (equalTaquin(&(cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
+				if (equalIdTaquin(&(cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
 				{
 					copyTaquin(&(cursorchild->pTaquin), pTaquin);
 
