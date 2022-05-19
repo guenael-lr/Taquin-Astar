@@ -135,7 +135,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 	ptrListAStar cursor = NULL;
 	ptrListAStar cursorchild = NULL;
 	ptrListAStar compare = NULL;
-	int g = 0;
+	int g = 0, nbcount = 0;
 	int end = 0;
 	int accu = 10000;
 	int parcouredNoded = 0;
@@ -152,14 +152,19 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 		cursor = popList(&open);
 		insertList(&closed, cursor, 0);
 		
+		
 		//displayTaquin(&(cursor->pTaquin), 0);
 		
 
 		for (int i = 1; i < 5; i++)
 		{
 			cursorchild = createNodeList(&(cursor->pTaquin), g, 0, i, cursor);
-			if (cursorchild) 
+			if (cursorchild)
 			{
+				if (cursor->prev_node && equalTaquin(&(cursorchild->pTaquin), &(cursor->prev_node->pTaquin))) {
+					freeList(&cursorchild);
+					continue;
+				}
 				if (equalTaquin(&(cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
 				{
 					copyTaquin(&(cursorchild->pTaquin), pTaquin);
@@ -214,14 +219,14 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 // fonction d'évaluation pour la résolution avec AStar
 int h(Taquin* pTaquin)
 {
-	return 0;
-	int k, tot = 0;
+	int k = 0, tot = 0;
 	for (int x = 0; x < pTaquin->hauteur; ++x)
 		for (int y = 0; y < pTaquin->largeur; ++y) {
-			//tot+=(pTaquin->plateau[x][y]==k)?0:1;
-			//k++;
-			tot += abs(k % pTaquin->largeur) + abs(k / pTaquin->largeur);
+			++k;
+			tot += abs(x - k % pTaquin->largeur) + abs(y - k / pTaquin->largeur);
 		}
+			
+		
 
 	return tot;
 }
