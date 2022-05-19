@@ -133,7 +133,7 @@ int mixTaquin(Taquin* _pTaquin, int _minRandom, int _maxRandom)
 // Fonction qui permet de bouger une pièce du taquin (en bougeant la case vide)
 int moveTaquin(Taquin* _pTaquin, deplacement _d)
 {
-	if (!_d) return 1;
+	if (!_d) return 0;
 
 	int x = _pTaquin->x, y = _pTaquin->y;
 
