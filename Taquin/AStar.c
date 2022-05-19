@@ -200,13 +200,15 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 // fonction d'évaluation pour la résolution avec AStar
 int h(Taquin* pTaquin)
 {
-	int ou, xx, yy, tot = 0;
+	return 0;
+	int k, xx, yy, tot = 0;
 	for (int x = 0; x < pTaquin->hauteur; ++x)
 		for (int y = 0; y < pTaquin->largeur; ++y) {
-			ou = pTaquin->plateau[x][y];
-			xx = ou % pTaquin->largeur;
-			yy = ou / pTaquin->largeur;
-			tot += abs(xx - x) + abs(yy - y);
+			tot+=(pTaquin->plateau[x][y]==k)?0:1;
+			k++;
+			/*xx = wherepute % pTaquin->largeur;
+			yy = wherepute / pTaquin->largeur;
+			tot += (xx - x)*(xx-x) + (yy - y)*(yy - y);*/
 		}
 
 	return tot;
@@ -214,23 +216,21 @@ int h(Taquin* pTaquin)
 
 void freeList(ptrListAStar* ppHead)
 {
-	ptrListAStar* iterator = ppHead;
-	ptrListAStar* tmp = NULL;
-	while ((*iterator)->post_node != NULL)
+
+
+	//ptrListAStar* iterator = ppHead;
+	ptrListAStar tmp = NULL;
+
+	while (*ppHead != NULL)
 	{
-		iterator = &((*iterator)->post_node);
+		freeTaquin(&((*ppHead)->pTaquin));
+		tmp = (*ppHead)->post_node;
+		free((*ppHead));
+		(*ppHead) = tmp;
+		if (!ppHead)
+			break;
 	}
-	while (iterator != ppHead)
-	{
-		freeTaquin(&((*iterator)->pTaquin));
-		tmp = &((*iterator)->prev_node);
-		free((*iterator)->post_node);
-		iterator = tmp;
-	}
-	freeTaquin(&((*ppHead)->pTaquin));
-	free((*ppHead));
-	
-	(* ppHead) = NULL;
+
 	
 	return;
 }
