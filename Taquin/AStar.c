@@ -34,7 +34,7 @@ ptrListAStar createNodeList(Taquin* pTaquin, int gValue, int fValue, deplacement
 	moveTaquin(&(node->pTaquin), d);
 
 	node->g = gValue;
-	node->f = fValue;
+	node->f = gValue + h(&(node->pTaquin));
 	node->prev_d = d;
 	node->prev_node = pPrevPlay;
 	return node;
@@ -54,7 +54,7 @@ int insertList(ptrListAStar* ppHead, ptrListAStar pNode, int tri)
 
 	ptrListAStar cursor = (*ppHead);
 
-	while (cursor->post_node != NULL && pNode->f >= cursor->post_node->f)
+	while (cursor->post_node != NULL && pNode->f > cursor->post_node->f)
 		cursor = cursor->post_node;
 
 	pNode->post_node = cursor->post_node;
@@ -153,7 +153,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 
 		for (int i = 1; i < 5; i++)
 		{
-			cursorchild = createNodeList(&(cursor->pTaquin), g, g + h(&(cursor->pTaquin)), i, cursor);
+			cursorchild = createNodeList(&(cursor->pTaquin), g, 0, i, cursor);
 			
 			if (equalTaquin(&(cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
 			{
@@ -166,14 +166,19 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 				break;
 			}
 			compare = isInList(&open, &(cursorchild->pTaquin));
-			if (compare) //si la board existe deja bon on s'en bas un peu la race a mais quoique deuxieme est ce que le score mais au final flemme je suppose
+			if (compare && compare->f > cursorchild->f) //si la board existe deja bon on s'en bas un peu la race a mais quoique deuxieme est ce que le score mais au final flemme je suppose
 			{
-				freeList(&cursorchild);
+				compare->f = cursorchild->f;
+				compare->g = cursorchild->g;
+				//freeList(&cursorchild);
 				continue; //on abandonne l'enfant
 			}
-			if (isInList(&closed, &(cursorchild->pTaquin)))
+			compare = isInList(&closed, &(cursorchild->pTaquin));
+			if (compare && compare->f > cursorchild->f)
 			{
-				freeList(&cursorchild);
+				compare->f = cursorchild->f;
+				compare->g = cursorchild->g;
+				//freeList(&cursorchild);
 				continue; //on abandonne l'enfant
 			}
 			
@@ -195,14 +200,13 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 // fonction d'évaluation pour la résolution avec AStar
 int h(Taquin* pTaquin)
 {
-	return 0;
-	int wherepute, xx, yy, tot = 0;
+	int ou, xx, yy, tot = 0;
 	for (int x = 0; x < pTaquin->hauteur; ++x)
 		for (int y = 0; y < pTaquin->largeur; ++y) {
-			wherepute = pTaquin->plateau[x][y];
-			xx = wherepute % pTaquin->largeur;
-			yy = wherepute / pTaquin->largeur;
-			tot += (xx - x)*(xx-x) + (yy - y)*(yy - y);
+			ou = pTaquin->plateau[x][y];
+			xx = ou % pTaquin->largeur;
+			yy = ou / pTaquin->largeur;
+			tot += abs(xx - x) + abs(yy - y);
 		}
 
 	return tot;
