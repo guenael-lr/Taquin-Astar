@@ -201,14 +201,12 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 int h(Taquin* pTaquin)
 {
 	return 0;
-	int k, xx, yy, tot = 0;
+	int k, tot = 0;
 	for (int x = 0; x < pTaquin->hauteur; ++x)
 		for (int y = 0; y < pTaquin->largeur; ++y) {
-			tot+=(pTaquin->plateau[x][y]==k)?0:1;
-			k++;
-			/*xx = wherepute % pTaquin->largeur;
-			yy = wherepute / pTaquin->largeur;
-			tot += (xx - x)*(xx-x) + (yy - y)*(yy - y);*/
+			//tot+=(pTaquin->plateau[x][y]==k)?0:1;
+			//k++;
+			tot += abs(k % pTaquin->largeur) + abs(k / pTaquin->largeur);
 		}
 
 	return tot;
