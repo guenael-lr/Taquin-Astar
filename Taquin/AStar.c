@@ -135,7 +135,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 	ptrListAStar cursor = NULL;
 	ptrListAStar cursorchild = NULL;
 	ptrListAStar compare = NULL;
-	int g = 0;
+	int g = 0, nbcount = 0;
 	int end = 0;
 	int accu = 10000;
 	int parcouredNoded = 0;
@@ -151,6 +151,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 			
 		cursor = popList(&open);
 		insertList(&closed, cursor, 0);
+		
 		
 		//displayTaquin(&(cursor->pTaquin), 0);
 		
