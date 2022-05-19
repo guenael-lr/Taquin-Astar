@@ -211,7 +211,7 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 										deplacement * tabDeplacements = NULL;
 										unsigned long nbDeplacements = 0;
 										unsigned long nbSommetsParcourus = 0;
-										unsigned long timeElapsed = 0;
+										clock_t timeElapsed = clock();
 
 										// On demande la résolution du taquin à l'ordinateur
 										if(solveTaquin(&(t.taquin),&tabDeplacements,&nbDeplacements, &nbSommetsParcourus, &timeElapsed, 0, t.pWindow))
@@ -221,7 +221,7 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 											int res = 0;
 											printf("Nombre de deplacements = %d\n",nbDeplacements);
 											printf("Nombre de sommets parcourus = %d\n",nbSommetsParcourus);
-											printf("Temps ecoule = %d ms\n",timeElapsed);
+											printf("Temps ecoule = %.3lf s\n",(double)(clock() - timeElapsed) / CLOCKS_PER_SEC);
 											displayTaquin(&(t.taquin), 0);
 											displayTaquinSDL(&t);
 
