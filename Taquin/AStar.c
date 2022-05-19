@@ -135,13 +135,14 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 	int g = 0;
 	int end = 0;
 	int accu = 10000;
+	int parcouredNoded = 0;
 	while (!end) 
 	{
 		++g;
 		
 		if (g > accu)
 		{
-			printf("g = %d\n", g);
+			printf("g = %d, NodesPar=%d\n", g, parcouredNoded);
 			accu = accu + 10000;
 		}
 			
@@ -159,31 +160,37 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 			{
 				copyTaquin(&(cursorchild->pTaquin), pTaquin);
 				
-				printf("PRIVATE\n");
+				printf("PRIVATE %d\n", parcouredNoded);
 				displayTaquin(&(cursorchild->pTaquin), 0);
 
 				end = 1;
 				break;
 			}
 			compare = isInList(&open, &(cursorchild->pTaquin));
-			if (compare && compare->f > cursorchild->f) //si la board existe deja bon on s'en bas un peu la race a mais quoique deuxieme est ce que le score mais au final flemme je suppose
+			if (compare)  //si la board existe deja bon on s'en bas un peu la race a mais quoique deuxieme est ce que le score mais au final flemme je suppose
 			{
-				compare->f = cursorchild->f;
-				compare->g = cursorchild->g;
-				//freeList(&cursorchild);
+				if (compare->f > cursorchild->f) {
+					compare->f = cursorchild->f;
+					compare->g = cursorchild->g;
+				}
+				freeList(&cursorchild);
 				continue; //on abandonne l'enfant
 			}
 			compare = isInList(&closed, &(cursorchild->pTaquin));
-			if (compare && compare->f > cursorchild->f)
+			if (compare)
 			{
-				compare->f = cursorchild->f;
-				compare->g = cursorchild->g;
-				//freeList(&cursorchild);
+				if (compare->f > cursorchild->f) {
+					compare->f = cursorchild->f;
+					compare->g = cursorchild->g;
+				}
+				
+				freeList(&cursorchild);
 				continue; //on abandonne l'enfant
 			}
 			
 			
 			insertList(&open, cursorchild, 1);
+			parcouredNoded++;
 			//displayTaquin(&(cursorchild->pTaquin), 0);
 
 			//cursorchild = cursorchild->post_node;
