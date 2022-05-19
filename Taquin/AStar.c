@@ -31,8 +31,11 @@ ptrListAStar createNodeList(Taquin* pTaquin, int gValue, int fValue, deplacement
 		return NULL;
 
 	copyTaquin(pTaquin, &(node->pTaquin));
-	moveTaquin(&(node->pTaquin), d);
-
+	if (moveTaquin(&(node->pTaquin), d)) {
+		freeTaquin(&(node->pTaquin));
+		free(node);
+		return NULL;
+	}
 	node->g = gValue;
 	node->f = gValue + h(&(node->pTaquin));
 	node->prev_d = d;
@@ -155,42 +158,44 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 		for (int i = 1; i < 5; i++)
 		{
 			cursorchild = createNodeList(&(cursor->pTaquin), g, 0, i, cursor);
-			
-			if (equalTaquin(&(cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
-			{
-				copyTaquin(&(cursorchild->pTaquin), pTaquin);
-				
-				printf("PRIVATE %d\n", parcouredNoded);
-				displayTaquin(&(cursorchild->pTaquin), 0);
+			if (cursorchild) {
+				if (equalTaquin(&(cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
+				{
+					copyTaquin(&(cursorchild->pTaquin), pTaquin);
 
-				end = 1;
-				break;
-			}
-			compare = isInList(&open, &(cursorchild->pTaquin));
-			if (compare)  //si la board existe deja bon on s'en bas un peu la race a mais quoique deuxieme est ce que le score mais au final flemme je suppose
-			{
-				if (compare->f > cursorchild->f) {
-					compare->f = cursorchild->f;
-					compare->g = cursorchild->g;
+					printf("PRIVATE %d\n", parcouredNoded);
+					displayTaquin(&(cursorchild->pTaquin), 0);
+
+					end = 1;
+					break;
 				}
-				freeList(&cursorchild);
-				continue; //on abandonne l'enfant
-			}
-			compare = isInList(&closed, &(cursorchild->pTaquin));
-			if (compare)
-			{
-				if (compare->f > cursorchild->f) {
-					compare->f = cursorchild->f;
-					compare->g = cursorchild->g;
+				compare = isInList(&open, &(cursorchild->pTaquin));
+				if (compare)  //si la board existe deja bon on s'en bas un peu la race a mais quoique deuxieme est ce que le score mais au final flemme je suppose
+				{
+					if (compare->f > cursorchild->f) {
+						compare->f = cursorchild->f;
+						compare->g = cursorchild->g;
+					}
+					freeList(&cursorchild);
+					continue; //on abandonne l'enfant
 				}
-				
-				freeList(&cursorchild);
-				continue; //on abandonne l'enfant
+				compare = isInList(&closed, &(cursorchild->pTaquin));
+				if (compare)
+				{
+					if (compare->f > cursorchild->f) {
+						compare->f = cursorchild->f;
+						compare->g = cursorchild->g;
+					}
+
+					freeList(&cursorchild);
+					continue; //on abandonne l'enfant
+				}
+
+
+				insertList(&open, cursorchild, 1);
+				parcouredNoded++;
 			}
 			
-			
-			insertList(&open, cursorchild, 1);
-			parcouredNoded++;
 			//displayTaquin(&(cursorchild->pTaquin), 0);
 
 			//cursorchild = cursorchild->post_node;
