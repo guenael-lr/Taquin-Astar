@@ -20,6 +20,7 @@ typedef ListAStar* ptrListAStar;		// Redéfinition pour faciliter l'écriture dans
 
 // Structure de donnée pour réprésenter un noeud de liste en mémoire
 struct sListAStar {
+	Uint64 id;
 	int g;				// Distance déjà parcourue entre l'état initial et l'état courant
 	int f;				// Evaluation de la distance à parcourir entre l'état initial et l'état final
 	Taquin pTaquin;				// Taquin contenu dans le noeud courant
@@ -28,6 +29,7 @@ struct sListAStar {
 	ptrListAStar post_node;		// Pointeur vers le noeud suivant (liste simplement chaînée)
 };
 
+Uint64 hash(Taquin* _pTaquin);
 
 Taquin* InitialTaquin(Taquin* _pTaquin);
 // fonction pour créer (allouer) un noeud de liste et l'initialiser avec le taquin passé en paramètre

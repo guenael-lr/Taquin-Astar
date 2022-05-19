@@ -8,6 +8,20 @@
 #include <conio.h>
 #include <assert.h>
 
+Uint64 hash(Taquin* _pTaquin) //djb2 algorithm http://www.cse.yorku.ca/~oz/hash.html
+{
+	
+	Uint64 hash = 5381;
+
+	for (int x = 0; x < _pTaquin->largeur; x++)
+		for (int y = 0; y < _pTaquin->hauteur; y++)
+		{
+			hash = ((hash << 5) + hash) + _pTaquin->plateau[x][y]; /* hash * 33 + c */
+		}
+
+	return hash;
+
+}
 
 
 // Fonction pour copier un plateau de taquin pSrc vers pDest
@@ -36,19 +50,12 @@ int equalTaquin(Taquin* _pTaquin1, Taquin* _pTaquin2)
 {
 	if (!_pTaquin1 || !_pTaquin2)
 		return -1;
-	//if (_pTaquin1->hauteur != _pTaquin2->hauteur || _pTaquin1->largeur != _pTaquin2->largeur)
-	//	return -1;
 
 	for (int x = 0; x < _pTaquin1->largeur; x++)
 	{
 		if (memcmp(_pTaquin1->plateau[x], _pTaquin2->plateau[x], _pTaquin1->largeur * sizeof(Uint8)))
 			return 0;
-		//for (int y = 0; y < _pTaquin1->hauteur; y++)
-		//	
-		//	if (_pTaquin1->plateau[x][y] != _pTaquin2->plateau[x][y])
-		//	{
-		//		return 0;
-		//	}
+
 	}
 	return 1;
 
