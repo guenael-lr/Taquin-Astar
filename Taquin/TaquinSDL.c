@@ -317,14 +317,15 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 		if(end>0)
 		{
 			// Affichage de l'image complète par dessus le tout
-			//SDL_Rect rect = { 0, 0, t.pFond->w, t.pFond->h };
-			//SDL_LowerBlit(t.pFond, &rect, t.pWindow, &rect);
-			//SDL_UpdateRect(t.pWindow, 0, 0, 0, 0);
-			//while (e.key.keysym.sym != SDLK_RETURN)
-			//{
-			//	SDL_PollEvent(&e);
-			//}
-			SDL_Delay(1000);
+			SDL_Rect rect = { 0, 0, t.pFond->w, t.pFond->h };
+			SDL_Rect windo = { 0, 0, t.pWindow->w, t.pWindow->h };
+			SDL_LowerBlit(t.pFond, &rect, t.pWindow, &windo);
+			SDL_UpdateRect(t.pWindow, 0, 0, 0, 0);
+			while (e.key.keysym.sym != SDLK_RETURN)
+			{
+				SDL_PollEvent(&e);
+			}
+			//SDL_Delay(1000);
 		}
 		// On réinitialise le taquin pour le prochain tour de jeu
 		initTaquin(&(t.taquin));
