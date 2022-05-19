@@ -54,7 +54,7 @@ int insertList(ptrListAStar* ppHead, ptrListAStar pNode, int tri)
 
 	ptrListAStar cursor = (*ppHead);
 
-	while (cursor->post_node != NULL && pNode->f >= cursor->post_node->f)
+	while (cursor->post_node != NULL && pNode->f > cursor->post_node->f)
 		cursor = cursor->post_node;
 
 	pNode->post_node = cursor->post_node;
@@ -168,6 +168,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 			compare = isInList(&open, &(cursorchild->pTaquin));
 			if (compare) //si la board existe deja bon on s'en bas un peu la race a mais quoique deuxieme est ce que le score mais au final flemme je suppose
 			{
+				//Est ce que c'est mieux ?
 				freeList(&cursorchild);
 				continue; //on abandonne l'enfant
 			}
@@ -196,13 +197,14 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 int h(Taquin* pTaquin)
 {
 	return 0;
-	int wherepute, xx, yy, tot = 0;
+	int k, xx, yy, tot = 0;
 	for (int x = 0; x < pTaquin->hauteur; ++x)
 		for (int y = 0; y < pTaquin->largeur; ++y) {
-			wherepute = pTaquin->plateau[x][y];
-			xx = wherepute % pTaquin->largeur;
+			tot+=(pTaquin->plateau[x][y]==k)?0:1;
+			k++;
+			/*xx = wherepute % pTaquin->largeur;
 			yy = wherepute / pTaquin->largeur;
-			tot += (xx - x)*(xx-x) + (yy - y)*(yy - y);
+			tot += (xx - x)*(xx-x) + (yy - y)*(yy - y);*/
 		}
 
 	return tot;
@@ -210,10 +212,12 @@ int h(Taquin* pTaquin)
 
 void freeList(ptrListAStar* ppHead)
 {
+
+
 	//ptrListAStar* iterator = ppHead;
 	ptrListAStar tmp = NULL;
 
-	while ((*ppHead)->post_node != NULL)
+	while (*ppHead != NULL)
 	{
 		freeTaquin(&((*ppHead)->pTaquin));
 		tmp = (*ppHead)->post_node;
@@ -222,10 +226,7 @@ void freeList(ptrListAStar* ppHead)
 		if (!ppHead)
 			break;
 	}
-	freeTaquin(&((*ppHead)->pTaquin));
-	free((*ppHead));
-	
-	(* ppHead) = NULL;
+
 	
 	return;
 }
