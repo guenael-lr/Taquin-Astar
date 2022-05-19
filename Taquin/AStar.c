@@ -146,9 +146,9 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 
 		insertList(&closed, cursor, 0);
 
-		for (int i = 1; i < 5; i++)
+		for (int i = 0; i < 4; i++)
 		{
-			cursorchild = createNodeList(&(cursor->pTaquin), cursor->g +1, 0, i, cursor);
+			cursorchild = createNodeList(&(cursor->pTaquin), cursor->g + 1, 0, i + 1 , cursor);
 			if (cursorchild)
 			{
 				if (equalTaquin(&(cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
@@ -157,23 +157,27 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 
 					printf("PRIVATE %d\n", parcouredNoded);
 					displayTaquin(&(cursorchild->pTaquin), 0);
-
+					int a = 0;
 					parent = closed;
 					while (parent) {
+						++a;
 						printf("Parent : %d", parent->g);
 						displayTaquin(&(parent->pTaquin), 0);
 						parent = parent->prev_node;
 					}
+					printf("%d", a);
 					printf("g = %d, NodesPar=%d\nChemin : \n", g, parcouredNoded);
-
+					freeList(&cursorchild);
 					end = 1;
 					break;
 				}
 
 				if (cursor->prev_node && equalTaquin(&(cursorchild->pTaquin), &(cursor->prev_node->pTaquin))) {
 					freeList(&cursorchild);
+					//cursor->post_node -> calculer ses enfants, enlever le mouvement nul et prendre celui qui est le meilleur parmi les restant si il y en a  
 					continue;
 				}
+				
 				compare = isInList(&closed, &(cursorchild->pTaquin));
 				if (compare)
 				{
@@ -186,6 +190,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 					freeList(&cursorchild);
 					continue; //on abandonne l'enfant
 				}
+
 				insertList(&open, cursorchild, 1);
 				parcouredNoded++;
 			}
@@ -200,18 +205,17 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 // fonction d'évaluation pour la résolution avec AStar
 int h(Taquin* pTaquin)
 {
-	int tot = 0;
+	int tot = 0, index = 0;;
 	for (int x = 0; x < pTaquin->hauteur; ++x)
 		for (int y = 0; y < pTaquin->largeur; ++y) {
-			tot += abs(x - pTaquin->plateau[x][y] % pTaquin->largeur) + abs(y - pTaquin->plateau[x][y] / pTaquin->largeur);
+			tot += 1*(index == pTaquin->plateau[x][y]) + abs(x - pTaquin->plateau[x][y] % pTaquin->largeur) + abs(y - pTaquin->plateau[x][y] / pTaquin->largeur);
+			++index;
 		}
 	return tot;
 }
 
 void freeList(ptrListAStar* ppHead)
 {
-
-
 	//ptrListAStar* iterator = ppHead;
 	ptrListAStar tmp = NULL;
 
@@ -222,7 +226,6 @@ void freeList(ptrListAStar* ppHead)
 		free((*ppHead));
 		(*ppHead) = tmp;
 	}
-
 	
 	return;
 }
