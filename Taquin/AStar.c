@@ -84,17 +84,19 @@ ptrListAStar isInList(ptrListAStar* ppHead, Taquin* pTaquin)
 	if (!ppHead || !(*ppHead))
 		return NULL;
 
-	if (equalTaquin(pTaquin, &((*ppHead)->pTaquin)))
+	if (equalIdTaquin(pTaquin, &((*ppHead)->pTaquin)))
 		return *ppHead;
 
-	while ((*ppHead)->post_node)
+	ptrListAStar cursor = (*ppHead);
+
+
+	//TODO : the code under is the most called on CPU time
+	while (cursor->post_node)
 	{
+		if (equalIdTaquin(pTaquin, &(cursor->pTaquin)))
+			return cursor;
 		
-		if (equalTaquin(pTaquin, &((*ppHead)->pTaquin)))
-			return *ppHead;
-
-		ppHead = &((*ppHead)->post_node);
-
+		cursor = cursor->post_node;
 	}
 	return NULL;
 }
@@ -139,8 +141,15 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 	int nbcount = 0;
 	int parcouredNoded = 0;
 	unsigned long startTime = SDL_GetTicks();
+	int accu = 5000;
 	while (!end) 
 	{
+		if (parcouredNoded > accu)
+		{
+			accu += 5000;
+			printf("g =~ %d || nodes = %d\n",closed->g, parcouredNoded);
+
+		}
 		cursor = open;
 		open = open->post_node;
 		cursor->post_node = NULL;
@@ -152,7 +161,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 			cursorchild = createNodeList(&(cursor->pTaquin), cursor->g + 1, 0, i + 1 , cursor);
 			if (cursorchild)
 			{
-				if (equalTaquin(&(cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
+				if (equalIdTaquin(&(cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
 				{
 					*pTimeElapsed = SDL_GetTicks() - startTime;
 					nbcount = cursorchild->g ;
@@ -182,7 +191,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 					break;
 				}
 
-				if (cursor->prev_node && equalTaquin(&(cursorchild->pTaquin), &(cursor->prev_node->pTaquin))) {
+				if (cursor->prev_node && equalIdTaquin(&(cursorchild->pTaquin), &(cursor->prev_node->pTaquin))) {
 					freeList(&cursorchild);
 					continue;
 				}

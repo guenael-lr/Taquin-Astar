@@ -246,7 +246,7 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 											}
 											}
 											
-											printf("Nombre de deplacements = %d\n", nbDeplacements);
+											printf("Nombre de deplacements = %d\n", nbDeplacements-2);
 											printf("Nombre de sommets parcourus = %d\n", nbSommetsParcourus);
 											printf("Temps ecoule = %ld ms\n", (TimeElapsed));
 										}

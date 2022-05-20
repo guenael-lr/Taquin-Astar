@@ -11,12 +11,12 @@
 Uint64 hash(Taquin* _pTaquin) //djb2 algorithm http://www.cse.yorku.ca/~oz/hash.html
 {
 	
-	Uint64 hash = 5381;
+	Uint64 hash = 0;
 
 	for (int x = 0; x < _pTaquin->largeur; x++)
 		for (int y = 0; y < _pTaquin->hauteur; y++)
 		{
-			hash = ((hash << 5) + hash) + _pTaquin->plateau[x][y]; /* hash * 33 + c */
+			hash = (hash << 4) ^ _pTaquin->plateau[x][y];
 		}
 
 	return hash;
@@ -62,6 +62,16 @@ int equalTaquin(Taquin* _pTaquin1, Taquin* _pTaquin2)
 	}
 	return 1;
 
+}
+// fonction qui renvoie 1 si les 2 taquins sont identiques
+// 0 sinon
+// -1 si il y a une erreur au passage des paramètres
+int equalIdTaquin(Taquin* _pTaquin1, Taquin* _pTaquin2)
+{
+	//if (!_pTaquin1 || !_pTaquin2) //askip ça prend un max de temps proco
+	//	return -1;
+
+	return _pTaquin1->id == _pTaquin2->id;
 }
 
 
@@ -113,6 +123,7 @@ int initTaquin(Taquin* _pTaquin)
 
 	_pTaquin->x = 0;
 	_pTaquin->y = 0;
+	_pTaquin->id = hash(_pTaquin);
 
 	return 0;
 }
@@ -143,6 +154,7 @@ int moveTaquin(Taquin* _pTaquin, deplacement _d)
 	if (!_d) return 0;
 
 	int x = _pTaquin->x, y = _pTaquin->y;
+	int ret = 1;
 
 	switch (_d) {
 	case GAUCHE:
@@ -150,36 +162,37 @@ int moveTaquin(Taquin* _pTaquin, deplacement _d)
 			_pTaquin->plateau[x][y] = _pTaquin->plateau[x - 1][y];
 			_pTaquin->plateau[x - 1][y] = 0;
 			--_pTaquin->x;
-			return 0;
+			ret = 0;
 		}
-		return 1;
+		break;
 	case DROITE:
 		if (x < _pTaquin->largeur - 1) {
 			_pTaquin->plateau[x][y] = _pTaquin->plateau[x + 1][y];
 			_pTaquin->plateau[x + 1][y] = 0;
 			++_pTaquin->x;
-			return 0;
+			ret = 0;
 		}
-		return 1;
+		break;
 	case BAS:
 		if (y < _pTaquin->hauteur - 1) {
 			_pTaquin->plateau[x][y] = _pTaquin->plateau[x][y + 1];
 			_pTaquin->plateau[x][y + 1] = 0;
 			++_pTaquin->y;
-			return 0;
+			ret = 0;
 		}
-		return 1;
+		break;
 	case HAUT:
 		if (y > 0) {
 			_pTaquin->plateau[x][y] = _pTaquin->plateau[x][y - 1];
 			_pTaquin->plateau[x][y - 1] = 0;
 			--_pTaquin->y;
-			return 0;
+			ret = 0;
 		}
-		return 1;
+		break;
 	}
+	_pTaquin->id = hash(_pTaquin);
 
-	return 1;
+	return ret;
 }
 
 // Fonction qui renvoie le déplacement à effectuer pour annuler le déplacement donné en paramètre
