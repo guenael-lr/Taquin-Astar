@@ -1,7 +1,12 @@
+
+//#include <vld.h>
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include "taquinSDL.h"
+
+
 
 #define _CRTDBG_MAP_ALLOC
 #include <crtdbg.h>
@@ -9,7 +14,7 @@
 
 void pause()
 {
-	system("pause");
+	//system("pause");
 }
 
 void usage()
