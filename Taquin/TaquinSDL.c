@@ -230,23 +230,22 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 												//displayTaquinSDL(&t);
 
 											 //On affiche la solution étape par étape
-											for(i=0; i < nbDeplacements; i++)
-											{
-												// On effectue le déplacement, on affiche le nouveau plateau et on attend un appui sur une touche pour continuer
-												if(tabDeplacements[i]!=AUCUN)
+												for(i=0; i <= nbDeplacements; i++)
 												{
+												// On effectue le déplacement, on affiche le nouveau plateau et on attend un appui sur une touche pour continuer
+
 													if (!moveTaquin(&(t.taquin), tabDeplacements[i]))
 													{
 														displayTaquinSDL(&t);
 														displayTaquin(&(t.taquin), 0);
-														SDL_Delay(500);
+														SDL_Delay(100);
 													}
-													else break;
+													else continue;
+													
 												}
 											}
-											}
 											
-											printf("Nombre de deplacements = %d\n", nbDeplacements-2);
+											printf("Nombre de deplacements = %d\n", nbDeplacements);
 											printf("Nombre de sommets parcourus = %d\n", nbSommetsParcourus);
 											printf("Temps ecoule = %ld ms\n", (TimeElapsed));
 										}

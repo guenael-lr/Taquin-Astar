@@ -30,7 +30,7 @@ struct sListAStar {
 
 Taquin* InitialTaquin(Taquin* _pTaquin);
 // fonction pour créer (allouer) un noeud de liste et l'initialiser avec le taquin passé en paramètre
-ptrListAStar createNodeList(Taquin * pTaquin, int gValue, int fValue, deplacement d, ptrListAStar pPrevPlay);
+ptrListAStar createNodeList(Taquin * pTaquin, int gValue, deplacement d, ptrListAStar pPrevPlay);
 
 // Insertion dans la liste de façon triée ou non
 // si on passe le paramètre tri à 0, on insère en tête de liste

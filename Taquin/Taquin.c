@@ -10,7 +10,8 @@
 
 Uint64 hash(Taquin* _pTaquin) //djb2 algorithm http://www.cse.yorku.ca/~oz/hash.html
 {
-	
+	//algorithme pour hasher le tableau et augmenter la rapidité de la comparaison entre les tableaux
+	//utilisé dans equalIdTaquin();
 	Uint64 hash = 0;
 
 	for (int x = 0; x < _pTaquin->largeur; x++)
@@ -63,12 +64,15 @@ int equalTaquin(Taquin* _pTaquin1, Taquin* _pTaquin2)
 	return 1;
 
 }
-// fonction qui renvoie 1 si les 2 taquins sont identiques
+// fonction qui renvoie 1 si les 2 ID des taquins sont identiques
 // 0 sinon
 // -1 si il y a une erreur au passage des paramètres
 int equalIdTaquin(Taquin* _pTaquin1, Taquin* _pTaquin2)
 {
-	//if (!_pTaquin1 || !_pTaquin2) //askip ça prend un max de temps proco
+	//Comme ce sont des verifications qui prennent beaucoup de temps
+	//On evite de les faire en priant
+	// 
+	//if (!_pTaquin1 || !_pTaquin2) 
 	//	return -1;
 
 	return _pTaquin1->id == _pTaquin2->id;
@@ -131,17 +135,18 @@ int initTaquin(Taquin* _pTaquin)
 // Fonction qui mélange le taquin en effectuant entre minRandom et maxRandom coups aléatoires
 int mixTaquin(Taquin* _pTaquin, int _minRandom, int _maxRandom)
 {
+	
 	int alea = rand() % (_maxRandom - _minRandom + 1) + _minRandom;
 	int d = AUCUN, rand_d = AUCUN;
 	for (int i = 0; i < alea; i++)
 	{
+		//on evite de reproduire le contraire du parent afin d'eviter les allers-retours
 		rand_d = rand() % 4 + 1;
 		if ((d == HAUT && rand_d == BAS) || (d == BAS && rand_d == HAUT) || (d == DROITE && rand_d == GAUCHE) || (d == GAUCHE && rand_d == DROITE)) {
 			--i;
 			continue;
 		}
 		if (moveTaquin(_pTaquin, rand_d)) --i;;
-		//displayTaquin(_pTaquin, 0);
 		d = rand_d;
 	}
 
