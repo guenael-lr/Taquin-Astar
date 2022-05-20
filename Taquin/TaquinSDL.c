@@ -341,7 +341,10 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 		initTaquin(&(t.taquin));
 	}
 	// On libère le taquin et les surfaces SDL
+	freeTaquin(InitialTaquin(&(t.taquin)));
+	free(InitialTaquin(&(t.taquin)));
 	freeTaquinSDL(&t);
+	
 
 	/* Shut them both down */
 	SDL_Quit();

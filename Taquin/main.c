@@ -14,7 +14,7 @@
 
 void pause()
 {
-	system("pause");
+	//system("pause");
 }
 
 void usage()
