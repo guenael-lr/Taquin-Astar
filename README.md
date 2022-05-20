@@ -46,7 +46,7 @@ _**Notre heuristique utilisée :**_
       Si on fait plus, l'IA ne pourra pas jouer correctement.
 
 
-_**Les quelques optimisation qu'on a pu trouver**_
+_**Les quelques optimisation que nous avons pu trouver**_
 
   Nous avions dans un premier temps optimisé la fonction de compariason de grille 
   en utilisant le fonction < *memcmp()* > pour comparer les lignes des grilles
@@ -63,7 +63,4 @@ _**Les quelques optimisation qu'on a pu trouver**_
   
   Toutes le instruction et conditions faites dans le < *solveTaquin()* > et les fonctions qu'elle appele 
   sont faites pour minimiser le temps de calcul et le nombre d'actions à realiser.
-    
-  
-  
-  
+   
