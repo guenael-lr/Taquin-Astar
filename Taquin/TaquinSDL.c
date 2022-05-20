@@ -1,6 +1,5 @@
 #include "TaquinSDL.h"
 #include "AStar.h"
-#include <time.h>
 #include "SDL_gfxprimitives.h"
 
 
@@ -202,6 +201,7 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 									end = -1;
 									break;
 								case SDLK_F1:
+								case SDLK_F2:
 									// On déclenche la résolution du taquin
 									// résolution SDL à faire par la suite pour laisser la main à l'utilisateur :
 									// - Arrêter la résolution (appui sur n'importe qu'elle touche
@@ -211,21 +211,24 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 										deplacement * tabDeplacements = NULL;
 										unsigned long nbDeplacements = 0;
 										unsigned long nbSommetsParcourus = 0;
-										clock_t timeElapsed = clock();
+										
+										unsigned long TimeElapsed = 0;
 
 										// On demande la résolution du taquin à l'ordinateur
-										if(solveTaquin(&(t.taquin),&tabDeplacements,&nbDeplacements, &nbSommetsParcourus, &timeElapsed, 0, t.pWindow))
+										if(solveTaquin(&(t.taquin),&tabDeplacements,&nbDeplacements, &nbSommetsParcourus, &TimeElapsed, 0, t.pWindow))
 										{
 											// Si on a trouvé une solution on affiche les informations issues de la résolution
 											unsigned long i;
 											int res = 0;
-											printf("Nombre de deplacements = %d\n",nbDeplacements);
-											printf("Nombre de sommets parcourus = %d\n",nbSommetsParcourus);
-											printf("Temps ecoule = %.3lf s\n",(double)(clock() - timeElapsed) / CLOCKS_PER_SEC);
-											displayTaquin(&(t.taquin), 0);
-											displayTaquinSDL(&t);
+											if (e.key.keysym.sym == SDLK_F2) {
+												moveTaquin(&(t.taquin), tabDeplacements[1]);
+												displayTaquinSDL(&t);
+											}
+											else {
+												//displayTaquin(&(t.taquin), 0);
+												//displayTaquinSDL(&t);
 
-											// On affiche la solution étape par étape
+											 //On affiche la solution étape par étape
 											for(i=0; i < nbDeplacements; i++)
 											{
 												// On effectue le déplacement, on affiche le nouveau plateau et on attend un appui sur une touche pour continuer
@@ -235,10 +238,16 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 													{
 														displayTaquinSDL(&t);
 														displayTaquin(&(t.taquin), 0);
+														SDL_Delay(500);
 													}
 													else break;
 												}
 											}
+											}
+											
+											printf("Nombre de deplacements = %d\n", nbDeplacements);
+											printf("Nombre de sommets parcourus = %d\n", nbSommetsParcourus);
+											printf("Temps ecoule = %ld ms\n", (TimeElapsed));
 										}
 										// Si la résolution n'a pas fonctionné, on affiche le taquin tel qu'il était avant résolution (on efface l'icone de "progression" si elle avait été dessinée)
 										else
