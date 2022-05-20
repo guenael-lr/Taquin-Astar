@@ -1,7 +1,7 @@
 # Taquin
 
-**Comment jouer ? **
-  Vous pouvez jouer avec les flèches ou wasd pour déplacer le carré vide.
+**Comment jouer ?**
+Vous pouvez jouer avec les flèches ou wasd pour déplacer le carré vide.
 
   Vous pouvez également jouer avec la souris en cliquant sur la case souhaitée, la case vide viendra la remplacer, si possible.
 
