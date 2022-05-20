@@ -21,21 +21,21 @@ _**Notre heuristique Utilisée :**_
       Nous calculons la distance de Manhattan (distance horizontale plus verticale)
   Ensuite :
      
-				on augmente l'heuristique si les voisins du noeud sont inversibles avec lui meme 
-				schema exemple : 
-				 2 5 8     0 1 2
-				 6 1 4     3 4 5
-				 3 0 7     6 7 8
-				 On peut observer que 6 & 3 sont inversibles et sont donc moins interessants a traiter
+	on augmente l'heuristique si les voisins du noeud sont inversibles avec lui meme 
+	schema exemple : 
+	 2 5 8     0 1 2
+	 6 1 4     3 4 5
+	 3 0 7     6 7 8
+	 On peut observer que 6 & 3 sont inversibles et sont donc moins interessants a traiter
 
-				if (x)
-					total += (pTaquin->plateau[x - 1][y] == index && pTaquin->plateau[x][y] == (x - 1 + y * pTaquin->hauteur));
-				if (x < pTaquin->largeur - 1)
-					total += (pTaquin->plateau[x + 1][y] == index && pTaquin->plateau[x][y] == (x + 1 + y * pTaquin->hauteur));
-				if (y)
-					total += (pTaquin->plateau[x][y - 1] == index && pTaquin->plateau[x][y] == (x + (y - 1) * pTaquin->hauteur));
-				if (y < pTaquin->hauteur - 1)
-					total += (pTaquin->plateau[x][y + 1] == index && pTaquin->plateau[x][y] == (x + (y + 1) * pTaquin->hauteur));
+	if (x)
+		total += (pTaquin->plateau[x - 1][y] == index && pTaquin->plateau[x][y] == (x - 1 + y * pTaquin->hauteur));
+	if (x < pTaquin->largeur - 1)
+		total += (pTaquin->plateau[x + 1][y] == index && pTaquin->plateau[x][y] == (x + 1 + y * pTaquin->hauteur));
+	if (y)
+		total += (pTaquin->plateau[x][y - 1] == index && pTaquin->plateau[x][y] == (x + (y - 1) * pTaquin->hauteur));
+	if (y < pTaquin->hauteur - 1)
+		total += (pTaquin->plateau[x][y + 1] == index && pTaquin->plateau[x][y] == (x + (y + 1) * pTaquin->hauteur));
           
   Pour finir :
       Nous baissons l'heuristique si les dernieres lignrs sont completes ou non.
