@@ -11,7 +11,8 @@
 int createTaquinSDL(TaquinSDL * pTaquinSDL,int hauteur, int largeur, char * pathBMPfile)
 {
 	// Test pour vérifier que les données passées ne sont pas corrompues
-	if(!pTaquinSDL) return 0;
+	if(!pTaquinSDL) 
+		return 0;
 
 	// initialisation de la fenêtre SDL
 	pTaquinSDL->pWindow = NULL;
@@ -19,7 +20,7 @@ int createTaquinSDL(TaquinSDL * pTaquinSDL,int hauteur, int largeur, char * path
 	pTaquinSDL->pFond = NULL;
 	// On crée le taquin qui sera utilisé pour jouer
 	pTaquinSDL->taquin.plateau = NULL;
-	createTaquin(&(pTaquinSDL->taquin),hauteur,largeur);
+	createTaquin(&(pTaquinSDL->taquin), hauteur, largeur);
 
 	// On met à jour la taille du taquin
 	largeur = pTaquinSDL->taquin.largeur;
@@ -148,8 +149,8 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 	TaquinSDL t;
 
 	// On crée le taquin et la fenêtre pour le dessiner
-	if(!createTaquinSDL(&t,hauteur,largeur,pathBMPfile)) return 0;
-
+	if(!createTaquinSDL(&t,hauteur,largeur,pathBMPfile)) 
+		return 0;
 
 	// On boucle sur le jeu tant qu'on a pas demandé de quitter
 	while(end>=0)
@@ -343,16 +344,15 @@ int gameLoopSDL(int hauteur,int largeur, char * pathBMPfile, int minRandom, int 
 int freeTaquinSDL(TaquinSDL * pTaquinSDL)
 {
 	// test pour savoir si les données passées ne sont pas corrompues
-	if(!pTaquinSDL) return 0;
+	if(!pTaquinSDL) return 1;
 
-	// On libère la fenêtre SDL
-	if(pTaquinSDL->pWindow) SDL_FreeSurface(pTaquinSDL->pWindow);
+	if(pTaquinSDL->pWindow) 
+		SDL_FreeSurface(pTaquinSDL->pWindow);
 
-	// On libère l'image de fond
-	if(pTaquinSDL->pFond) SDL_FreeSurface(pTaquinSDL->pFond);
+	if(pTaquinSDL->pFond) 
+		SDL_FreeSurface(pTaquinSDL->pFond);
 
-	// On libère le taquin (mode console)
 	freeTaquin(&(pTaquinSDL->taquin));
 
-	return 1;
+	return 0;
 }
