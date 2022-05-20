@@ -12,7 +12,9 @@ Vous pouvez jouer avec les flèches ou wasd pour déplacer le carré vide.
   F2 - permet de ne faire qu'un seul déplacement d'une résolution A*, permet ainsi de recalculer le chemin 
        après chaque coup effectué par l'IA. 
        Le temps de calcul est plus long mais le chemin trouvé est techniquement l'un des meilleurs
-
+       
+  ENTREE - Lorsqu'une partie est terminée et que l'image est completement affichée, 
+  	   appuyer sur la touche vous permet de remixer le jeu et de relancer une nouvelle partie.
 
 _**Notre heuristique utilisée :**_
   Nous avons mixé plusieurs heuristiques afin d'être le plus précis possible.
