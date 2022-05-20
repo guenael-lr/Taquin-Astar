@@ -89,9 +89,16 @@ ptrListAStar isInList(ptrListAStar* ppHead, Taquin* pTaquin)
 
 	ptrListAStar cursor = (*ppHead);
 
-	while (cursor && !equalIdTaquin(pTaquin, &(cursor->pTaquin)))
+
+	//TODO : the code under is the most called on CPU time
+	while ((*ppHead)->post_node)
 	{
-		cursor = cursor->post_node;
+
+		if (equalIdTaquin(pTaquin, &((*ppHead)->pTaquin)))
+			return *ppHead;
+
+		ppHead = &((*ppHead)->post_node);
+
 	}
 	return NULL;
 }
