@@ -11,12 +11,12 @@
 Uint64 hash(Taquin* _pTaquin) //djb2 algorithm http://www.cse.yorku.ca/~oz/hash.html
 {
 	
-	Uint64 hash = 5381;
+	Uint64 hash = 0;
 
 	for (int x = 0; x < _pTaquin->largeur; x++)
 		for (int y = 0; y < _pTaquin->hauteur; y++)
 		{
-			hash = ((hash << 5) + hash) + _pTaquin->plateau[x][y]+1; /* hash * 33 + c */
+			hash = (hash << 4) ^ _pTaquin->plateau[x][y];
 		}
 
 	return hash;
@@ -68,12 +68,10 @@ int equalTaquin(Taquin* _pTaquin1, Taquin* _pTaquin2)
 // -1 si il y a une erreur au passage des paramètres
 int equalIdTaquin(Taquin* _pTaquin1, Taquin* _pTaquin2)
 {
-	if (!_pTaquin1 || !_pTaquin2)
-		return -1;
+	//if (!_pTaquin1 || !_pTaquin2) //askip ça prend un max de temps proco
+	//	return -1;
 
-	if(_pTaquin1->id == _pTaquin2->id)
-		return 1;
-	return 0;
+	return _pTaquin1->id == _pTaquin2->id;
 }
 
 
@@ -125,6 +123,7 @@ int initTaquin(Taquin* _pTaquin)
 
 	_pTaquin->x = 0;
 	_pTaquin->y = 0;
+	_pTaquin->id = hash(_pTaquin);
 
 	return 0;
 }
