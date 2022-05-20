@@ -135,9 +135,10 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 	ptrListAStar cursor = NULL;
 	ptrListAStar cursorchild = NULL;
 	ptrListAStar compare = NULL;
-	int g = 0, nbcount = 0;
 	int end = 0;
+	int nbcount = 0;
 	int parcouredNoded = 0;
+	unsigned long startTime = SDL_GetTicks();
 	while (!end) 
 	{
 		cursor = open;
@@ -153,35 +154,48 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 			{
 				if (equalTaquin(&(cursorchild->pTaquin), InitialTaquin(&(cursor->pTaquin))))
 				{
-					copyTaquin(&(cursorchild->pTaquin), pTaquin);
-
-					printf("PRIVATE %d\n", parcouredNoded);
-					displayTaquin(&(cursorchild->pTaquin), 0);
-					int a = 0;
-					parent = closed;
+					*pTimeElapsed = SDL_GetTicks() - startTime;
+					nbcount = cursorchild->g ;
+					*pNbDeplacements = nbcount +1;
+					* pTabDeplacement = calloc(nbcount+1, sizeof(deplacement));
+					parent = cursorchild;
+					
 					while (parent) {
-						++a;
 						printf("Parent : %d", parent->g);
 						displayTaquin(&(parent->pTaquin), 0);
+						(* pTabDeplacement)[nbcount] = parent->prev_d;
 						parent = parent->prev_node;
+						--nbcount;
 					}
-					printf("%d", a);
-					printf("g = %d, NodesPar=%d\nChemin : \n", g, parcouredNoded);
+					
+					*pNbTaquinsGeneres = parcouredNoded;
+					//printf("g = %d, NodesPar=%d\nChemin : \n", cursorchild->g, parcouredNoded);
 					freeList(&cursorchild);
 					end = 1;
 					break;
 				}
 
 				if (cursor->prev_node && equalTaquin(&(cursorchild->pTaquin), &(cursor->prev_node->pTaquin))) {
-					freeList(&cursorchild);
-					//cursor->post_node -> calculer ses enfants, enlever le mouvement nul et prendre celui qui est le meilleur parmi les restant si il y en a  
+					freeList(cursorchild);
 					continue;
 				}
-				
+
 				compare = isInList(&closed, &(cursorchild->pTaquin));
 				if (compare)
 				{
 					if (compare->f > cursorchild->f) 
+					{
+						compare->f = cursorchild->f;
+						compare->g = cursorchild->g;
+						compare->prev_node = cursorchild->prev_node;
+					}
+					freeList(&cursorchild);
+					continue; //on abandonne l'enfant
+				}
+				compare = isInList(&open, &(cursorchild->pTaquin));
+				if (compare)
+				{
+					if (compare->f > cursorchild->f)
 					{
 						compare->f = cursorchild->f;
 						compare->g = cursorchild->g;
@@ -205,12 +219,40 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 // fonction d'évaluation pour la résolution avec AStar
 int h(Taquin* pTaquin)
 {
-	int tot = 0, index = 0;;
+	int tot = -1, index = 0;;
 	for (int x = 0; x < pTaquin->hauteur; ++x)
 		for (int y = 0; y < pTaquin->largeur; ++y) {
-			tot += 1*(index == pTaquin->plateau[x][y]) + abs(x - pTaquin->plateau[x][y] % pTaquin->largeur) + abs(y - pTaquin->plateau[x][y] / pTaquin->largeur);
+			if (index != pTaquin->plateau[x][y]) {
+				tot += abs(x - pTaquin->plateau[x][y] % pTaquin->largeur) + abs(y - pTaquin->plateau[x][y] / pTaquin->largeur);
+				if (x)
+					tot += (pTaquin->plateau[x - 1][y] == pTaquin->plateau[x][y]) - 1;
+			}
+				
 			++index;
 		}
+
+	if (pTaquin->hauteur== 2)
+		return tot;
+
+	int hauteur_1 = pTaquin->hauteur -1;
+	for (int x = 0; x < pTaquin->largeur; x++)
+	{
+		if (pTaquin->plateau[hauteur_1][x] != (hauteur_1 * (hauteur_1 + 1) + x))
+			return tot;
+	}
+	tot -= 20;
+	if (hauteur_1 == 2)
+		return tot;
+	--hauteur_1;
+
+	for (int x = 0; x < pTaquin->largeur; x++)
+	{
+		if (pTaquin->plateau[hauteur_1][x] != (hauteur_1 * (hauteur_1 + 1) + x))
+			return tot;
+	}
+	tot -= 20;
+	
+
 	return tot;
 }
 
