@@ -47,6 +47,7 @@ _**Notre heuristique utilisée :**_
       Pour un 4x4 et une 5x5, ce sont les deux dernieres lignes qui sont regardées.
       Si on fait plus, l'IA ne pourra pas jouer correctement.
 
+  Nous sous-évaluons l'heuristique en mettant le total à -1 dès le lacement du calcul de celle-ci.
 
 _**Les quelques optimisation que nous avons pu trouver**_
 
