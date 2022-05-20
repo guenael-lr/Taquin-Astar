@@ -160,7 +160,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 					* pTabDeplacement = calloc(nbcount+1, sizeof(deplacement));
 					parent = cursorchild;
 					
-					while (parent) {
+					while (nbcount) {
 						printf("Parent : %d", parent->g);
 						displayTaquin(&(parent->pTaquin), 0);
 						(* pTabDeplacement)[nbcount] = parent->prev_d;
@@ -219,39 +219,42 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 // fonction d'évaluation pour la résolution avec AStar
 int h(Taquin* pTaquin)
 {
-	int tot = -1, index = 0;;
+	int tot = +1, index = 0;;
 	for (int x = 0; x < pTaquin->hauteur; ++x)
 		for (int y = 0; y < pTaquin->largeur; ++y) {
 			if (index != pTaquin->plateau[x][y]) {
-				tot += abs(x - pTaquin->plateau[x][y] % pTaquin->largeur) + abs(y - pTaquin->plateau[x][y] / pTaquin->largeur);
+				tot += 1 + abs(x - pTaquin->plateau[x][y] % pTaquin->largeur) + abs(y - pTaquin->plateau[x][y] / pTaquin->largeur);
 				if (x)
-					tot += (pTaquin->plateau[x - 1][y] == pTaquin->plateau[x][y]) - 1;
+					tot += (pTaquin->plateau[x - 1][y] == index && pTaquin->plateau[x][y] == (x - 1 + y * pTaquin->hauteur));
+				if (x < pTaquin->largeur - 1)
+					tot += (pTaquin->plateau[x + 1][y] == index && pTaquin->plateau[x][y] == (x + 1 + y * pTaquin->hauteur));
+				if (y)
+					tot += (pTaquin->plateau[x][y - 1] == index && pTaquin->plateau[x][y] == (x + (y - 1) * pTaquin->hauteur));
+				if (y < pTaquin->hauteur - 1)
+					tot += (pTaquin->plateau[x][y + 1] == index && pTaquin->plateau[x][y] == (x + (y + 1) * pTaquin->hauteur));
 			}
-				
+			else
+				tot -= index;
 			++index;
 		}
 
 	if (pTaquin->hauteur== 2)
 		return tot;
 
-	int hauteur_1 = pTaquin->hauteur -1;
+	int hauteur_1 = pTaquin->hauteur - 1;
 	for (int x = 0; x < pTaquin->largeur; x++)
-	{
 		if (pTaquin->plateau[hauteur_1][x] != (hauteur_1 * (hauteur_1 + 1) + x))
 			return tot;
-	}
-	tot -= 20;
+	
+	tot -= 10;
 	if (hauteur_1 == 2)
 		return tot;
 	--hauteur_1;
 
 	for (int x = 0; x < pTaquin->largeur; x++)
-	{
 		if (pTaquin->plateau[hauteur_1][x] != (hauteur_1 * (hauteur_1 + 1) + x))
 			return tot;
-	}
-	tot -= 20;
-	
+	tot -= 50;
 
 	return tot;
 }
