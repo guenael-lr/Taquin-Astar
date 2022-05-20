@@ -158,7 +158,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 					nbcount = cursorchild->g ;
 					*pNbDeplacements = nbcount +1;
 					* pTabDeplacement = calloc(nbcount+1, sizeof(deplacement));
-					if (*pTabDeplacement)
+					if (!(* pTabDeplacement))
 					{
 						freeList(&cursorchild);
 						freeList(&open);
