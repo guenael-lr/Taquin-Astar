@@ -87,14 +87,11 @@ ptrListAStar isInList(ptrListAStar* ppHead, Taquin* pTaquin)
 	if (equalIdTaquin(pTaquin, &((*ppHead)->pTaquin)))
 		return *ppHead;
 
-	while ((*ppHead)->post_node)
+	ptrListAStar cursor = (*ppHead);
+
+	while (cursor && !equalIdTaquin(pTaquin, &(cursor->pTaquin)))
 	{
-		
-		if (equalIdTaquin(pTaquin, &((*ppHead)->pTaquin)))
-			return *ppHead;
-
-		ppHead = &((*ppHead)->post_node);
-
+		cursor = cursor->post_node;
 	}
 	return NULL;
 }
