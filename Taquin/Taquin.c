@@ -36,7 +36,10 @@ int copyTaquin(Taquin* _pSrc, Taquin* _pDest)
 	{
 		(_pDest->plateau)[i] = (Uint8*)calloc(_pDest->hauteur, sizeof(Uint8));
 		if (!(_pDest->plateau)[i])
+		{
+			freeTaquin(_pDest);
 			return 1;
+		}
 		memcpy(_pDest->plateau[i], _pSrc->plateau[i], sizeof(Uint8) * _pSrc->hauteur);
 	}
 
@@ -70,38 +73,32 @@ int createTaquin(Taquin* _pTaquin, Uint8 _hauteur, Uint8 _largeur)
 	// Test pour vérifier que les données passées ne sont pas corrompues
 	if (!_pTaquin) return 0;
 
-	// Tests pour vérifier les paramètres de taille de taquin
 	if (_hauteur < SIZE_MINI) _hauteur = SIZE_MINI;
 	if (_hauteur > SIZE_MAXI) _hauteur = SIZE_MAXI;
 	if (_largeur < SIZE_MINI) _largeur = SIZE_MINI;
 	if (_largeur > SIZE_MAXI) _largeur = SIZE_MAXI;
 
-	// On vérifie que le plateau n'existe pas
-	// S'il existe on libère la mémoire avant de recréer le plateau
 	freeTaquin(_pTaquin);
 
 	_pTaquin->hauteur = _hauteur;
 	_pTaquin->largeur = _largeur;
 
-	// on alloue la zone mémoire pour stocker les adresses des lignes du tableau
 	_pTaquin->plateau = (Uint8**)calloc(_hauteur, sizeof(Uint8*));
-
-	// si on a pas réussi à allouer la zone mémoire on retourne 0
-	if (!_pTaquin->plateau) return 0;
+	if (!_pTaquin->plateau) 
+		return 0;
 
 	for (int i = 0; i < _hauteur; i++)
 	{
-		// On alloue la zone mémoire pour contenir la ligne i
 		_pTaquin->plateau[i] = (Uint8*)calloc(_largeur, sizeof(Uint8));
-		// S'il y a eu un souci à l'allocation on libère tout ce qui a déjàà été alloué et on retourne 0
 		if (!_pTaquin->plateau[i])
 		{
 			freeTaquin(_pTaquin);
 			return 1;
 		}
 	}
-	// On initialise le taquin
-	if (initTaquin(_pTaquin)) return 1;
+
+	if (initTaquin(_pTaquin)) 
+		return 1;
 
 	return 0;
 }
@@ -229,9 +226,8 @@ int freeTaquin(Taquin* _pTaquin)
 	if (_pTaquin->plateau)
 	{
 		// On libère le plateau ligne par ligne
-		for (int i = 0; i < _pTaquin->hauteur; i++)
-			if (_pTaquin->plateau[i])
-				free(_pTaquin->plateau[i]);
+		for (int i = 0; i < _pTaquin->largeur; i++)
+			free(_pTaquin->plateau[i]);
 		// On libère le tableau qui stockait les lignes
 		free(_pTaquin->plateau);
 		_pTaquin->plateau = NULL;

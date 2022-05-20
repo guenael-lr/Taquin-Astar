@@ -158,12 +158,19 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 					nbcount = cursorchild->g ;
 					*pNbDeplacements = nbcount +1;
 					* pTabDeplacement = calloc(nbcount+1, sizeof(deplacement));
+					if (*pTabDeplacement)
+					{
+						freeList(&cursorchild);
+						freeList(&open);
+						freeList(&closed);
+						return 0;
+					}
 					parent = cursorchild;
 					
 					while (nbcount) {
 						printf("Parent : %d", parent->g);
 						displayTaquin(&(parent->pTaquin), 0);
-						(* pTabDeplacement)[nbcount] = parent->prev_d;
+						(*pTabDeplacement)[nbcount] = parent->prev_d;
 						parent = parent->prev_node;
 						--nbcount;
 					}
@@ -176,7 +183,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 				}
 
 				if (cursor->prev_node && equalTaquin(&(cursorchild->pTaquin), &(cursor->prev_node->pTaquin))) {
-					freeList(cursorchild);
+					freeList(&cursorchild);
 					continue;
 				}
 
@@ -212,6 +219,7 @@ int solveTaquin(Taquin* pTaquin, deplacement** pTabDeplacement, unsigned long* p
 	}
 	freeList(&open);
 	freeList(&closed);
+	
 
 	return 1;
 }
