@@ -1,6 +1,7 @@
 # Taquin
 
 **Comment jouer ?**
+
 Vous pouvez jouer avec les flèches ou wasd pour déplacer le carré vide.
 
   Vous pouvez également jouer avec la souris en cliquant sur la case souhaitée, la case vide viendra la remplacer, si possible.
@@ -13,7 +14,7 @@ Vous pouvez jouer avec les flèches ou wasd pour déplacer le carré vide.
        Le temps de calcul est plus long mais le chemin trouvé est techniquement l'un des meilleurs
 
 
-_**Notre heuristique Utilisée :**_
+_**Notre heuristique utilisée :**_
   Nous avons mixé plusieurs heuristiques afin d'être le plus précis possible.
   Dans un premier temps : 
       On ajoute 1 si la case n'est pas bien placée
@@ -46,6 +47,7 @@ _**Notre heuristique Utilisée :**_
 
 
 _**Les quelques optimisation qu'on a pu trouver**_
+
   Nous avions dans un premier temps optimisé la fonction de compariason de grille 
   en utilisant le fonction < *memcmp()* > pour comparer les lignes des grilles
   Ainsi, nous evitons de faire de la comparaison case par case et de perdre du temps étant donné que c'est la plus appelée.
